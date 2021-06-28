@@ -16,7 +16,7 @@ deploy:
   provider: releases
   token:
     secure: ksVdNBWH+uJju1iJFpO8JiY+rfDyevaxfCvVeFP22zxF8zJnJLScZNsW+tvN2Gm0/FRFlCvebxTBRozISdbvhLxp8xJVPCpbMmuYpHpAzwA7Uwe3jgJ5BB0IASG9yGX3KlTitqFkyYdsEqSSM5ltehfhhNYtGG+x8D7qyrYl+C1S+QupkIGrIKnLp6mrUoZuVOuNS1zDUd870+q4xz3I6xPjCNxSvwilsTT+koVLrz2NoaRzfPsYISpFRC5gXb8IvZqMph0KfvlDJJMKB5x4hpR8eVrxql0e9suGAz5KALXUCHWslxJ4Y33VAoNhBeLP184FbwjqcQzKewTsL9vuAiy/G2sn1zh6kc6lu1v9tzoIsURxhYRdhqn2BXs5JoJUDkSeKuQPHe+6I0LCFBY0kJaNq0EfzEgzeqc5ERWHbHEUA4AG973lx6IQPSaiWBgDbpGkwe0UaJVPnl4Ln31AfQo9DG8Z177Y/3obbP+iKprmm+F7frOECNshvLnB1YIg6h5nss55pCgydbcUupMPIu/NfPcW/T2usLdlpyWMEgP2z0R2b0UH0Fsx2if69Ga073D0/dtndPR3QkCRqexq2PfYeNwgzD/kNbcTsfsmLA5tLmJ1wzR3Yi8mrLc4QmV/EbUqqMoTPUnA5iZdc1zGWthohfkpPZz9m6Lxo1prLno=
-  file: target/vkgl-clinvar-submission-writer.jar
+  file: target/vkgl-clinvar-writer.jar
   prerelease: true
   on:
     tags: true
