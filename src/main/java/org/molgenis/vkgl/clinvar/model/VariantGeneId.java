@@ -19,9 +19,4 @@ public class VariantGeneId {
     this.variantId = new VariantId(mappingLine);
     this.gene = mappingLine.getGene();
   }
-
-  public VariantGeneId(SubmissionLine submissionLine) {
-    this.variantId = new VariantId(submissionLine.getConsensusLine());
-    this.gene = submissionLine.getConsensusLine().getGene();
-  }
 }
