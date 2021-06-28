@@ -13,7 +13,7 @@
 
   <groupId>org.molgenis</groupId>
   <artifactId>vkgl-clinvar</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>vkgl-clinvar</name>
   <description>Tool to submit VKGL datasharing consensus to ClinVar</description>
