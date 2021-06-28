@@ -1,0 +1,23 @@
+os: linux
+dist: bionic
+language: java
+jdk: openjdk11
+cache:
+  directories:
+  - "$HOME/.m2"
+addons:
+  sonarcloud:
+    organization: molgenis
+    token:
+      secure: CEz5OZcrUxi8qLmK7kiUR9BBD4h6Uo0XdvPhkSCSLUYb2sLMZGSH+vCWbxlgK6rI4Cq3Ys5UUWH49GwUnJgnwaHX1B2Yzi8hxmaQwKHLYerrF5WQ0Po+HHa6CR/LKSbrqz1zgtVKRcWQtERsFAYmu4Z7tPDUvngKrgJB0xTilTkZVWu6SvvcLJgESNp0Lt4Eqao5Gyh7ejjt9b0B59FAyBgyrlj4XPgArQ0dqSQ0PlrMbitUq001D0emH3nUtAkcKd66swfGrhnIP0RqiGuAQfqPhk8EQJdV7sKMV79oRHddihlbq8kEJMoROmMqvCICfmboURn+ApKDLkF/BOU+iz7wDsQbcJecKQEEwygv+O022VybMKIgRWWarV4h6JJK9QS8cjkP6OBD793FXcXQdZw4pB38HLnggD74zhdR0o1jwO7qcZqXtIXTLzuRrs23xhLRihBaiTlGqeZjA0Ky3IpFVvvy9J4QxkPi/OCJqd0jnlFW9CuERzgAUPf1hYrerAecYN7G7bP7dgab/K6qPsFh8PsHHor8WdmyGwxQRQ7qQFPkVlc9mAe2PlNm7Ypx9Ea4OpFU4dPJOvhBmbVHzXfbHpCLJ3gZr8m63GKvlS50erJHYFmWX1azOt0YTu1Ar/mUnYK2Y+/NbGjMZqM2lIxQGS5ir2ygYZyCXdEs85Y=
+script:
+- mvn clean install sonar:sonar -Pcoverage -Dsonar.projectKey=molgenis_vkgl-clinvar-submission
+deploy:
+  provider: releases
+  token:
+    secure: ksVdNBWH+uJju1iJFpO8JiY+rfDyevaxfCvVeFP22zxF8zJnJLScZNsW+tvN2Gm0/FRFlCvebxTBRozISdbvhLxp8xJVPCpbMmuYpHpAzwA7Uwe3jgJ5BB0IASG9yGX3KlTitqFkyYdsEqSSM5ltehfhhNYtGG+x8D7qyrYl+C1S+QupkIGrIKnLp6mrUoZuVOuNS1zDUd870+q4xz3I6xPjCNxSvwilsTT+koVLrz2NoaRzfPsYISpFRC5gXb8IvZqMph0KfvlDJJMKB5x4hpR8eVrxql0e9suGAz5KALXUCHWslxJ4Y33VAoNhBeLP184FbwjqcQzKewTsL9vuAiy/G2sn1zh6kc6lu1v9tzoIsURxhYRdhqn2BXs5JoJUDkSeKuQPHe+6I0LCFBY0kJaNq0EfzEgzeqc5ERWHbHEUA4AG973lx6IQPSaiWBgDbpGkwe0UaJVPnl4Ln31AfQo9DG8Z177Y/3obbP+iKprmm+F7frOECNshvLnB1YIg6h5nss55pCgydbcUupMPIu/NfPcW/T2usLdlpyWMEgP2z0R2b0UH0Fsx2if69Ga073D0/dtndPR3QkCRqexq2PfYeNwgzD/kNbcTsfsmLA5tLmJ1wzR3Yi8mrLc4QmV/EbUqqMoTPUnA5iZdc1zGWthohfkpPZz9m6Lxo1prLno=
+  file: target/vkgl-clinvar-submission-writer.jar
+  prerelease: true
+  on:
+    tags: true
+  edge: true # opt in to dpl v2
