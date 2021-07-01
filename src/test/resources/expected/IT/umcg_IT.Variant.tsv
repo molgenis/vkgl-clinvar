@@ -1,4 +1,4 @@
-Chromosome	Start	Stop	Reference allele	Alternate allele	Preferred condition name	Clinical significance	Date last evaluated	Gene symbol	ClinVarAccession	Novel or Update
-2	1	1	A	T	not provided	Likely benign		GENE	123456A	update
-1	1	1	A	T	not provided	Likely benign		GENE		novel
-4	1	1	A	T	not provided	Likely benign		GENE		novel
+Chromosome	Start	Stop	Reference allele	Alternate allele	Preferred condition name	Clinical significance	Date last evaluated	Gene symbol	ClinVarAccession	Novel or Update	Allele origin	Affected status	Collection method
+2	1	1	A	T	not provided	Likely benign		GENE	123456A	update	germline	yes	clinical testing
+4	1	1	A	T	not provided	Likely benign		GENE		novel	germline	yes	clinical testing
+1	1	1	A	T	not provided	Likely benign		GENE		novel	germline	yes	clinical testing

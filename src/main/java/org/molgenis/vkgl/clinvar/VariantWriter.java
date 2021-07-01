@@ -15,7 +15,8 @@ import org.molgenis.vkgl.clinvar.model.SubmissionLine;
 
 public class VariantWriter {
 
-  public static final String VARIANT_FORMAT = "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%n";
+  public static final String VARIANT_FORMAT =
+      "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s%n";
   public static final String VARIANT_SHEET = "Variant.tsv";
 
   private static final String CHROMOSOME = "Chromosome";
@@ -29,8 +30,15 @@ public class VariantWriter {
   public static final String GENE_SYMBOL = "Gene symbol";
   public static final String CLIN_VAR_ACCESSION = "ClinVarAccession";
   private static final String NOVEL_OR_UPDATE = "Novel or Update";
+  private static final String ALLELE_ORIGIN = "Allele origin";
+  private static final String AFFECTED_STATUS = "Affected status";
+  private static final String COLLECTION_METHOD = "Collection method";
+
   public static final String NOT_PROVIDED = "not provided";
   public static final String NOT_SPECIFIED = "not specified";
+  public static final String AFFECTED_STATUS_VALUE = "yes";
+  public static final String COLLECTION_METHOD_VALUE = "clinical testing";
+  public static final String ALLELE_ORIGIN_VALUE = "germline";
 
   private static final String HEADER =
       String.format(
@@ -45,7 +53,10 @@ public class VariantWriter {
           DATE_LAST_EVALUATED,
           GENE_SYMBOL,
           CLIN_VAR_ACCESSION,
-          NOVEL_OR_UPDATE);
+          NOVEL_OR_UPDATE,
+          ALLELE_ORIGIN,
+          AFFECTED_STATUS,
+          COLLECTION_METHOD);
   public static final String UPDATE = "update";
   public static final String NOVEL = "novel";
 
@@ -101,7 +112,10 @@ public class VariantWriter {
         "",
         line.getGene(),
         accession,
-        type);
+        type,
+        ALLELE_ORIGIN_VALUE,
+        AFFECTED_STATUS_VALUE,
+        COLLECTION_METHOD_VALUE);
   }
 
   private static String getConditionName(Classification classification) {
