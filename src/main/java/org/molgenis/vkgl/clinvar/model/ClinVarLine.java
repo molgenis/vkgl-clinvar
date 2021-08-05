@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClinVarLine {
   @CsvBindByName(column = "SCV", required = true)
-  String SCV;
+  String scv;
 
   @CsvBindByName(column = "Your_variant_description", required = true)
   String variantDescription;

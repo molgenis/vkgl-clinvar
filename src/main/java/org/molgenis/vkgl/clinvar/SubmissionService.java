@@ -84,7 +84,7 @@ public class SubmissionService {
             .ref(ref)
             .alt(alt)
             .gene(line.getGene())
-            .clinVarAccession(line.getSCV())
+            .clinVarAccession(line.getScv())
             .classification(classification)
             .lab(lab.name())
             .build();

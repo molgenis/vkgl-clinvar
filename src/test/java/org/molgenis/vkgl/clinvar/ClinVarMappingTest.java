@@ -1,6 +1,7 @@
 package org.molgenis.vkgl.clinvar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.molgenis.vkgl.clinvar.model.Lab.umcg;
 
 import java.util.Set;
@@ -49,6 +50,12 @@ class ClinVarMappingTest {
   void addMapping() {
     clinVarMapping.addMapping(mappingLine1);
     assertEquals(mappingLine1, clinVarMapping.getMapping(umcg, new VariantGeneId(mappingLine1)));
+  }
+
+  @Test
+  void addMappingDuplicate() {
+    clinVarMapping.addMapping(mappingLine1);
+    assertThrows(DuplicateAccessionException.class, () -> clinVarMapping.addMapping(mappingLine1));
   }
 
   @Test

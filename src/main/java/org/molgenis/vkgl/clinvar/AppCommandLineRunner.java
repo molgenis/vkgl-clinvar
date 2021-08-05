@@ -14,7 +14,7 @@ import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_SINGLE_MODE;
 import ch.qos.logback.classic.Level;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.cli.CommandLine;
@@ -112,7 +112,7 @@ class AppCommandLineRunner implements CommandLineRunner {
   }
 
   private Map<Lab, Path> getClinVarMappings(CommandLine commandLine) {
-    HashMap<Lab, Path> result = new HashMap<>();
+    EnumMap<Lab, Path> result = new EnumMap<>(Lab.class);
     if (commandLine.hasOption(OPT_CLINVAR_REPORT)) {
       String clinVarMappingPathValue = commandLine.getOptionValue(OPT_CLINVAR_REPORT);
       String[] clinVarMappingPerLab = clinVarMappingPathValue.split(",");
