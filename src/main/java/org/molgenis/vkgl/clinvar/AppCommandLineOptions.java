@@ -12,8 +12,10 @@ class AppCommandLineOptions {
 
   static final String OPT_INPUT = "i";
   static final String OPT_INPUT_LONG = "input";
-  static final String OPT_MAPPING = "m";
-  static final String OPT_MAPPING_LONG = "mapping";
+  static final String OPT_MAPPINGS = "m";
+  static final String OPT_MAPPINGS_LONG = "mappings";
+  static final String OPT_CLINVAR_REPORT = "c";
+  static final String OPT_CLINVAR_REPORT_LONG = "clinVar";
   static final String OPT_OUTPUT_DIR = "o";
   static final String OPT_OUTPUT_DIR_LONG = "output";
   static final String OPT_RELEASE_NAME = "r";
@@ -30,6 +32,7 @@ class AppCommandLineOptions {
   static final String OPT_VERSION_LONG = "version";
   private static final Options APP_OPTIONS;
   private static final Options APP_VERSION_OPTIONS;
+  private static final String TSV = ".tsv";
 
   static {
     Options appOptions = new Options();
@@ -41,11 +44,16 @@ class AppCommandLineOptions {
             .desc("VKGL consensus file (tsv).")
             .build());
     appOptions.addOption(
-        Option.builder(OPT_MAPPING)
+        Option.builder(OPT_MAPPINGS)
             .hasArg(true)
-            .required()
-            .longOpt(OPT_MAPPING_LONG)
-            .desc("Mapping file containing position and ClinVar Accessions (tsv).")
+            .longOpt(OPT_MAPPINGS_LONG)
+            .desc("Mapping log files from previous run with this tool.")
+            .build());
+    appOptions.addOption(
+        Option.builder(OPT_CLINVAR_REPORT)
+            .hasArg(true)
+            .longOpt(OPT_CLINVAR_REPORT_LONG)
+            .desc("ClinVar Submission reports from previous submission, format: lab1:report path,lab2:report path")
             .build());
     appOptions.addOption(
         Option.builder(OPT_OUTPUT_DIR)
@@ -106,20 +114,36 @@ class AppCommandLineOptions {
   static void validateCommandLine(CommandLine commandLine) {
     validateInput(commandLine);
     validateMapping(commandLine);
+    validateClinVar(commandLine);
     validateOutput(commandLine);
   }
 
   private static void validateInput(CommandLine commandLine) {
     Path inputPath = Path.of(commandLine.getOptionValue(OPT_INPUT));
-    validateTsv(inputPath);
+    validatePath(inputPath, TSV);
   }
 
   private static void validateMapping(CommandLine commandLine) {
-    Path mappingPath = Path.of(commandLine.getOptionValue(OPT_MAPPING));
-    validateTsv(mappingPath);
+    String mappingPathValue = commandLine.getOptionValue(OPT_MAPPINGS);
+    for(String mapping : mappingPathValue.split(",")){
+      validatePath(Path.of(mapping), TSV);
+    }
   }
 
-  private static void validateTsv(Path inputPath) {
+  private static void validateClinVar(CommandLine commandLine) {
+    if (commandLine.hasOption(OPT_CLINVAR_REPORT)) {
+      String mappingPathValue = commandLine.getOptionValue(OPT_CLINVAR_REPORT);
+      for (String mapping : mappingPathValue.split(",")) {
+        String[] split = mapping.split("=");
+        if (split.length != 2) {
+          throw new InvalidClinVarArgumentException(mapping);
+        }
+        validatePath(Path.of(split[1]), ".txt");
+      }
+    }
+  }
+
+  private static void validatePath(Path inputPath, String extension) {
     if (!Files.exists(inputPath)) {
       throw new IllegalArgumentException(
           format("Input file '%s' does not exist.", inputPath.toString()));
@@ -133,9 +157,9 @@ class AppCommandLineOptions {
           format("Input file '%s' is not readable.", inputPath.toString()));
     }
     String inputPathStr = inputPath.toString();
-    if (!inputPathStr.endsWith(".vcf") && !inputPathStr.endsWith(".tsv")) {
+    if (!inputPathStr.endsWith(".vcf") && !inputPathStr.endsWith(extension)) {
       throw new IllegalArgumentException(
-          format("Input file '%s' is not a .tsv file.", inputPathStr));
+          format("Input file '%s' is not a %s file.", inputPathStr, extension));
     }
   }
 

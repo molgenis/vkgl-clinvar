@@ -1,6 +1,8 @@
 package org.molgenis.vkgl.clinvar.model;
 
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Value;
 
@@ -9,7 +11,8 @@ import lombok.Value;
 public class Settings {
 
   Path input;
-  Path mapping;
+  List<Path> mappings;
+  Map<Lab, Path> clinVarMapping;
   Path outputDir;
   boolean overwrite;
   boolean debug;

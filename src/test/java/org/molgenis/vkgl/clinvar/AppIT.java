@@ -23,8 +23,9 @@ class AppIT {
   void test() throws IOException {
     String consensusFile = ResourceUtils.getFile("classpath:IT_Consensus.tsv").toString();
     String mappingFile = ResourceUtils.getFile("classpath:IT_Mapping.tsv").toString();
+    String clinvarFile = ResourceUtils.getFile("classpath:IT_ClinVar_report.txt").toString();
 
-    String[] args = {"-i", consensusFile, "-m", mappingFile, "-o", sharedTempDir.toString(), "-r",
+    String[] args = {"-i", consensusFile, "-m", mappingFile, "-c", String.format("umcg=%s", clinvarFile) ,"-o", sharedTempDir.toString(), "-r",
         "IT", "-dd" };
     SpringApplication.run(App.class, args);
 
