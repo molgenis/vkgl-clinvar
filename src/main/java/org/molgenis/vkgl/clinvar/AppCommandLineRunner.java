@@ -1,22 +1,28 @@
 package org.molgenis.vkgl.clinvar;
 
 import static java.util.Objects.requireNonNull;
+import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_CLINVAR_REPORT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DEBUG;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DUPLICATE_MODE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_FORCE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_INPUT;
-import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_MAPPING;
+import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_MAPPINGS;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_OUTPUT_DIR;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_RELEASE_NAME;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_SINGLE_MODE;
 
 import ch.qos.logback.classic.Level;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
+import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,8 +87,9 @@ class AppCommandLineRunner implements CommandLineRunner {
   private Settings mapSettings(CommandLine commandLine) {
     String inputPathValue = commandLine.getOptionValue(OPT_INPUT);
     Path inputPath = Path.of(inputPathValue);
-    String mappingPathValue = commandLine.getOptionValue(OPT_MAPPING);
-    Path mappingPath = Path.of(mappingPathValue);
+    String mappingPathValue = commandLine.getOptionValue(OPT_MAPPINGS);
+    List<Path> mappings = mapMappings(mappingPathValue);
+    Map<Lab,Path> clinVarMappings = getClinVarMappings(commandLine);
     Path outputPath = Path.of(commandLine.getOptionValue(OPT_OUTPUT_DIR));
     String release = commandLine.getOptionValue(OPT_RELEASE_NAME);
     boolean overwriteOutput = commandLine.hasOption(OPT_FORCE);
@@ -95,12 +102,40 @@ class AppCommandLineRunner implements CommandLineRunner {
         .input(inputPath)
         .includeSingleLab(isIncludeSingleLab)
         .deleteDuplicates(isDeleteDuplicates)
-        .mapping(mappingPath)
+        .mappings(mappings)
+        .clinVarMapping(clinVarMappings)
         .outputDir(outputPath)
         .overwrite(overwriteOutput)
         .release(release)
         .debug(debugMode)
         .build();
+  }
+
+  private Map<Lab, Path> getClinVarMappings(CommandLine commandLine) {
+    EnumMap<Lab, Path> result = new EnumMap<>(Lab.class);
+    if (commandLine.hasOption(OPT_CLINVAR_REPORT)) {
+      String clinVarMappingPathValue = commandLine.getOptionValue(OPT_CLINVAR_REPORT);
+      String[] clinVarMappingPerLab = clinVarMappingPathValue.split(",");
+      for (String singleLabArgument : clinVarMappingPerLab) {
+        String[] split = singleLabArgument.split("=");
+        if (split.length == 2) {
+          String labName = split[0];
+          Path path = Path.of(split[1]);
+          result.put(Lab.valueOf(labName), path);
+        } else {
+          throw new InvalidClinVarArgumentException(singleLabArgument);
+        }
+      }
+    }
+    return result;
+  }
+
+  private List<Path> mapMappings(String mappingPathValue) {
+    List<Path> mappings = new ArrayList<>();
+    for(String mapping : mappingPathValue.split(",")){
+      mappings.add(Path.of(mapping));
+    }
+    return mappings;
   }
 
   private CommandLine getCommandLine(String[] args) {

@@ -1,23 +1,34 @@
 ## Usage
 ```
-usage: java -jar vkgl-clinvar-writer.jar -i <arg> -m <arg> -o
-       <arg> -r <arg> [-dm <arg>] [-s] [-f] [-d]
- -i,--input <arg>             VKGL consensus file (tsv).
- -m,--mapping <arg>           Mapping file containing position and ClinVar
-                              Accessions (tsv).
- -o,--output <arg>            Directory to write output to.
- -r,--release <arg>           Release name to use in ClinVar file names.
- -dm,--duplicate_mode           Flag to indicate is existing duplicated
-                              should be deleted.
- -s,--include_single_lab      Flag to indicate that single lab submissions
-                              should also be submitted.
- -f,--force                   Override the output files if output
-                              directory already exists.
- -d,--debug                   Enable debug mode (additional logging).
+usage: java -jar vkgl-clinvar-writer.jar -i <arg> [-m <arg>] [-c <arg>] -o
+       <arg> -r <arg> [-dd] [-s] [-f] [-d]
+ -i,--input <arg>          VKGL consensus file (tsv).
+ -m,--mappings <arg>       Mapping log files from previous run with this
+                           tool.
+ -c,--clinVar <arg>        ClinVar Submission reports from previous
+                           submission, format: lab1:report
+                           path,lab2:report path
+ -o,--output <arg>         Directory to write output to.
+ -r,--release <arg>        Release name to use in ClinVar file names.
+ -dd,--delete_duplicated   Flag to indicate is existing duplicated should
+                           be deleted.
+ -s,--include_single_lab   Flag to indicate that single lab submissions
+                           should also be submitted.
+ -f,--force                Override the output files if output directory
+                           already exists.
+ -d,--debug                Enable debug mode (additional logging).
 
 usage: java -jar vkgl-clinvar-writer.jar -v
  -v,--version   Print version.
 ```
+
+##Existing ID's
+
+For the correct submission of updates of existing records please provide the following files:
+- Log files of the previous run of this tool that were not submitted to ClinVar (Unchanged, duplicates, deletes if they were not submitted).
+- ClinVar submission reports for all labs that were submitte.
+The flow of this tool expects that all labs are submitted every cycle, if submits for a subset of labs were performed some manual work may be needed.
+e.g. adding the "Updated" log as well but removing lines for the labs that were submitted from it first.
 
 ##Current limitation - No SV support
 Variant longer than 15 nucleotides are not submitted, ClinVar has slightly different rules for these variants that are not yet implemented.

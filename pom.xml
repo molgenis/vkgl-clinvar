@@ -26,17 +26,17 @@
     </license>
   </licenses>
 
-  <!--scm>
-    <connection>scm:git:git://github.com/molgenis/TODO.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/molgenis/TODO.git
+  <scm>
+    <connection>scm:git:git://github.com/molgenis/vkgl-clinvar.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/molgenis/vkgl-clinvar.git
     </developerConnection>
-    <url>https://github.com/molgenis/TODO</url>
+    <url>https://github.com/molgenis/vkgl-clinvar</url>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/molgenis/TODO/issues</url>
-  </issueManagement-->
+    <url>https://github.com/molgenis/vkgl-clinvar/issues</url>
+  </issueManagement>
 
   <properties>
     <java.version>11</java.version>
