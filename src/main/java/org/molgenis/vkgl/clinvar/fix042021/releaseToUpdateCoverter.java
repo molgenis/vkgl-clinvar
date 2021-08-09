@@ -97,7 +97,14 @@ public class releaseToUpdateCoverter {
       throw new RuntimeException("ERROR");
     }
     line.setNoverOrUpdate("update");
-    line.setClinVarAccession(mappingLine.getClinVarAccession());
+    String[] clinvarAccessionSplit = mappingLine.getClinVarAccession().split("\\.");
+    String clinVarAccession;
+    if(clinvarAccessionSplit.length >= 1){
+      clinVarAccession = clinvarAccessionSplit[0];
+    }else{
+      throw new RuntimeException(String.format("Invalid ClinVarAccession: '%s'", mappingLine.getClinVarAccession()));
+    }
+    line.setClinVarAccession(clinVarAccession);
     return line;
   }
 
