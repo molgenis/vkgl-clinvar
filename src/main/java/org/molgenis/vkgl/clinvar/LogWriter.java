@@ -20,7 +20,7 @@ public class LogWriter {
   }
 
   public static final String FILE_NAME_FORMAT = "%s_%s_%s";
-  public static final String POSTFIX = "log.tsv";
+  public static final String POSTFIX = "identifiers.tsv";
   private final Settings settings;
   private static final String HEADER =
       "chromosome\tstart\tstop\tref\talt\tgene\tclinvar_accession\tclassification\tlab\tcomment\n";
