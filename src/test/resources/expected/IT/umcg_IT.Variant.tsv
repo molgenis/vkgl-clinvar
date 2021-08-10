@@ -2,4 +2,4 @@ Chromosome	Start	Stop	Reference allele	Alternate allele	Preferred condition name
 2	1	1	A	T	not provided	Likely benign		GENE	123456A	update	germline	yes	clinical testing
 4	1	1	A	T	not provided	Likely benign		GENE		novel	germline	yes	clinical testing
 1	1	1	A	T	not provided	Likely benign		GENE		novel	germline	yes	clinical testing
-9	1	1	C	G	not provided	Likely benign		GENE	SCV00123456.1	update	germline	yes	clinical testing
+9	1	1	C	G	not provided	Likely benign		GENE	SCV00123456	update	germline	yes	clinical testing

@@ -32,7 +32,7 @@ class SubmissionServiceTest {
         ClinVarLine.builder()
             .clinicalSignificance("Benign")
             .gene("Gene")
-            .scv("SCV123")
+            .scv("SCV123.1")
             .variantDescription(
                 "<SequenceLocation Assembly=\"GRCh37\" Chr=\"9\" alternateAllele=\"G\" referenceAllele=\"C\" start=\"1\" stop=\"1\" variantLength=\"1\"/>")
             .build();
