@@ -49,3 +49,28 @@ Accession can become invalid if:
 ##Duplicates
 Setting the --delete_duplicated flag will remove ClinVar accession that have been duplicated.
 Please note that duplicates are **not added** if the flag is not set.
+
+## Submission
+
+1. Make sure you are permitted to submit variants for the lab(s) you want to submit for. Go to
+   the [ClinVar submission portal](https://submit.ncbi.nlm.nih.gov/clinvar/) and login.
+2. Scroll down to the organisation you want to submit for.
+3. Click on "Upload new file submission".
+4. Select the following options:
+   ![submission information](img/submission_information.png)
+   The submission name will be generated for you. Click Save and Continue.
+5. In the next step, select `Single organization` for the first question. Then, if you're submitting
+   for your own lab, select "No" and if you're submitting for another lab, select "Yes" and specify
+   your own lab in the dropdown (there usually is one option).
+6. Now it's time to upload your submission file. For now, we just upload the 
+   `lab_yyyymmName.Variant.tsv`-file. Wait for it to upload (when the delete button becomes visible)
+   and click "Save and continue".
+7. Click "Save and continue" again in the "Assertion criteria"-step.
+8. Review the options you've selected. Make sure the "Submission description" is set to 
+   "VKGL Data-share Consensus". Then click "Validate and stop if there are errors". Now you should
+   wait until you get an email telling you there are errors. You can download the file to find out
+   what's wrong. Fix them. If your submission succeeded, you will receive an email with 
+   "Acknowledgement of our submission to ClinVar (SUBXXX)". Now all you need to do is wait until you
+   receive an email from ClinVar with the subject "Your submission is 100% complete (SUBXXX)". 
+   Please be aware that ClinVar takes some time to index the newly added submissions, so it might
+   take about two days for the new variants to become available through search.
