@@ -23,12 +23,18 @@ usage: java -jar vkgl-clinvar-writer.jar -v
 ```
 
 ##Existing ID's
+There is a bit of hocus pocus going on around the ClinVar SCV's (identifiers), mainly because at this point we are not sure what to do with records that were submitted to ClinVar but became duplicates in the new release, or records that were removed from the consensus.
+2 options are in play for annotating the new ClinVar release files with the correct SCV's:
+'m' / 'mappings': Here the 'identifier' files from previous release can be provided, 4 of these are available, depending on what was submitted they should be provided:
+- *_UNCHANGED_log.tsv: always provide this one, it contains identifiers for unchanged record, those are not resubmitted.
+- *_UPDATED_log.tsv: don't provide those, updated record SCV's are obtained from the ClinVar Submission report.
+- *_REMOVED_log.tsv: Only provide if removed records were not removed from ClinVar.
+- *_DUPLICATED_log.tsv: Provide if records that became duplicated in last release were not removed from ClinVar.
 
-For the correct submission of updates of existing records please provide the following files:
-- Log files of the previous run of this tool that were not submitted to ClinVar (Unchanged, duplicates, deletes if they were not submitted).
-- ClinVar submission reports for all labs that were submitte.
+'c' / 'clinVar': Here the submission report from ClinVar for the previous release should be provided for each lab. The argument is a comma separated list of key=value pairs.
+
 The flow of this tool expects that all labs are submitted every cycle, if submits for a subset of labs were performed some manual work may be needed.
-e.g. adding the "Updated" log as well but removing lines for the labs that were submitted from it first.
+e.g. adding the "Updated" identifier file as well but removing lines for the labs that were submitted from it first.
 
 ##Current limitation - No SV support
 Variant longer than 15 nucleotides are not submitted, ClinVar has slightly different rules for these variants that are not yet implemented.
@@ -43,17 +49,3 @@ Accession can become invalid if:
 ##Duplicates
 Setting the --delete_duplicated flag will remove ClinVar accession that have been duplicated.
 Please note that duplicates are **not added** if the flag is not set.
-
-##Mapping
-A manually constructed mapping file for the first ClinVar release is available.
-
-The log files:
-- *_DUPLICATED_log
-- *_REMOVED_log
-- *_UNCHANGED_log
-- *_UPDATED_log
-
-are formatted in the same format as the mapping file (as provided for the --mapping_file option) for the existing ClinVar Accessions, these files can be used in combination with the ClinVar submission reports to create a mapping file for the next release.
-Which of these files should be included depends on the "delete duplicates" flag and if both Variant and Deletes sheets were submitted.
-
-Tooling to support this should be created once we have ClinVar submission reports from the next submission.
