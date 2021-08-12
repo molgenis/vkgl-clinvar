@@ -76,6 +76,8 @@ public class SubmissionService {
     String ref = location.getAttribute("referenceAllele");
     String alt = location.getAttribute("alternateAllele");
     Classification classification = Classification.of(line.getClinicalSignificance());
+    String clinVarAccession = processClinVarAccession(line.getScv());
+
     MappingLine mappingLine =
         MappingLine.builder()
             .chromosome(chromosome)
@@ -84,11 +86,22 @@ public class SubmissionService {
             .ref(ref)
             .alt(alt)
             .gene(line.getGene())
-            .clinVarAccession(line.getScv())
+            .clinVarAccession(clinVarAccession)
             .classification(classification)
             .lab(lab.name())
             .build();
     clinVarMapping.addMapping(mappingLine);
+  }
+
+  private String processClinVarAccession(String accession) {
+    String[] clinvarAccessionSplit = accession.split("\\.");
+    String clinVarAccession;
+    if(clinvarAccessionSplit.length == 2){
+      clinVarAccession = clinvarAccessionSplit[0];
+    }else{
+      throw new InvalidClinVarAccessionException(accession);
+    }
+    return clinVarAccession;
   }
 
   private Element parseXml(String xml) {
