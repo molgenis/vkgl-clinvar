@@ -6,8 +6,8 @@ usage: java -jar vkgl-clinvar-writer.jar -i <arg> [-m <arg>] [-c <arg>] -o
  -m,--mappings <arg>       Mapping log files from previous run with this
                            tool.
  -c,--clinVar <arg>        ClinVar Submission reports from previous
-                           submission, format: lab1:report
-                           path,lab2:report path
+                           submission, format: lab1=report
+                           path,lab2=report path
  -o,--output <arg>         Directory to write output to.
  -r,--release <arg>        Release name to use in ClinVar file names.
  -dd,--delete_duplicated   Flag to indicate is existing duplicated should

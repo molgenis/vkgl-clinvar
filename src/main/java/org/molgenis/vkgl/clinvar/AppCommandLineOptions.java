@@ -53,7 +53,7 @@ class AppCommandLineOptions {
         Option.builder(OPT_CLINVAR_REPORT)
             .hasArg(true)
             .longOpt(OPT_CLINVAR_REPORT_LONG)
-            .desc("ClinVar Submission reports from previous submission, format: lab1:report path,lab2:report path")
+            .desc("ClinVar Submission reports from previous submission, format: lab1=report path,lab2=report path")
             .build());
     appOptions.addOption(
         Option.builder(OPT_OUTPUT_DIR)
