@@ -164,21 +164,16 @@ class SubmissionDecoratorTest {
 
   @Test
   void getAccessionsToDelete() {
-    doReturn("123").when(submissionLine1).getClinVarAccession();
     doReturn("234").when(submissionLine3).getClinVarAccession();
     doReturn("345").when(submissionLine4).getClinVarAccession();
 
-    doReturn(mappingLine1).when(submissionLine1).getMappingLine();
     doReturn(mappingLine3).when(submissionLine3).getMappingLine();
     doReturn(mappingLine4).when(submissionLine4).getMappingLine();
-    when(umcgLabSubmission.getDuplicated())
-        .thenReturn(
-            Map.of(new VariantId("1", 1, 2, "T", "A"), Set.of(submissionLine1, submissionLine2)));
     when(umcgLabSubmission.getInvalid()).thenReturn(Set.of(submissionLine3, submissionLine4));
 
     assertEquals(
-        Set.of("123", "345", "234"),
-        submissionDecorator.getAccessionsToDelete(umcg, true));
+        Set.of("345", "234"),
+        submissionDecorator.getAccessionsToDelete(umcg));
   }
 
   @Test

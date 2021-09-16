@@ -3,7 +3,6 @@ package org.molgenis.vkgl.clinvar;
 import static java.util.Objects.requireNonNull;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_CLINVAR_REPORT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DEBUG;
-import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DUPLICATE_MODE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_FORCE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_INPUT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_MAPPINGS;
@@ -96,12 +95,10 @@ class AppCommandLineRunner implements CommandLineRunner {
 
     boolean debugMode = commandLine.hasOption(OPT_DEBUG);
     boolean isIncludeSingleLab = commandLine.hasOption(OPT_SINGLE_MODE);
-    boolean isDeleteDuplicates = commandLine.hasOption(OPT_DUPLICATE_MODE);
 
     return Settings.builder()
         .input(inputPath)
         .includeSingleLab(isIncludeSingleLab)
-        .deleteDuplicates(isDeleteDuplicates)
         .mappings(mappings)
         .clinVarMapping(clinVarMappings)
         .outputDir(outputPath)

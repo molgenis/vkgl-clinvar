@@ -19,7 +19,7 @@ public class SubmissionLine {
 
   public boolean isChanged() {
     return mappingLine == null || !consensusLine.getClassification(lab)
-        .equals(mappingLine.getClassification());
+        .equals(mappingLine.getClassification()) || !mappingLine.getGene().equals(consensusLine.getGene());
   }
 
   public boolean isSingleLab() {

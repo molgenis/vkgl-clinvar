@@ -17,6 +17,5 @@ public class Settings {
   boolean overwrite;
   boolean debug;
   boolean includeSingleLab;
-  boolean deleteDuplicates;
   String release;
 }

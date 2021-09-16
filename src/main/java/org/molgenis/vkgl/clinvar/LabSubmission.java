@@ -5,13 +5,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.molgenis.vkgl.clinvar.model.ConsensusLine;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
 import org.molgenis.vkgl.clinvar.model.SubmissionLine;
-import org.molgenis.vkgl.clinvar.model.VariantGeneId;
 import org.molgenis.vkgl.clinvar.model.VariantId;
 
 public class LabSubmission {
@@ -31,12 +31,11 @@ public class LabSubmission {
   }
 
   public void addConsensusLine(ConsensusLine consensusLine) {
-    VariantGeneId variantGeneId = new VariantGeneId(consensusLine);
     VariantId variantId = new VariantId(consensusLine);
 
     MappingLine mappingLine = null;
-    if (clinVarMapping.containsKey(lab, variantGeneId)) {
-      mappingLine = clinVarMapping.getMapping(lab, variantGeneId);
+    if (clinVarMapping.containsKey(lab, variantId)) {
+      mappingLine = clinVarMapping.getMapping(lab, variantId);
       accessions.add(mappingLine.getClinVarAccession());
     }
     SubmissionLine submissionLine =
@@ -58,7 +57,15 @@ public class LabSubmission {
   }
 
   public void variantTriage(boolean isSubmitSingleLine) {
+    addMostSevereDuplicates();
     consensusLines.values().stream().forEach(line -> processLine(line, isSubmitSingleLine));
+  }
+
+  private void addMostSevereDuplicates() {
+    for(Entry<VariantId, Set<SubmissionLine>> entry : duplicateLines.entrySet()){
+      SubmissionLine mostSevereLine = DuplicateVariantUtil.getMostSevereVariant(entry.getValue());
+      consensusLines.put(entry.getKey(), mostSevereLine);
+    }
   }
 
   private void processLine(SubmissionLine submissionLine, boolean isSubmitSingleLine) {

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.molgenis.vkgl.clinvar.model.Classification;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
-import org.molgenis.vkgl.clinvar.model.VariantGeneId;
+import org.molgenis.vkgl.clinvar.model.VariantId;
 
 class ClinVarMappingTest {
 
@@ -33,7 +33,7 @@ class ClinVarMappingTest {
           .lab("umcg")
           .chromosome("1")
           .start(2)
-          .stop(3)
+          .stop(4)
           .ref("T")
           .alt("A")
           .gene("GENE3")
@@ -49,7 +49,7 @@ class ClinVarMappingTest {
   @Test
   void addMapping() {
     clinVarMapping.addMapping(mappingLine1);
-    assertEquals(mappingLine1, clinVarMapping.getMapping(umcg, new VariantGeneId(mappingLine1)));
+    assertEquals(mappingLine1, clinVarMapping.getMapping(umcg, new VariantId(mappingLine1)));
   }
 
   @Test
@@ -71,6 +71,6 @@ class ClinVarMappingTest {
   @Test
   void containsKey() {
     clinVarMapping.addMapping(mappingLine1);
-    assertEquals(true, clinVarMapping.containsKey(umcg, new VariantGeneId(mappingLine1)));
+    assertEquals(true, clinVarMapping.containsKey(umcg, new VariantId(mappingLine1)));
   }
 }

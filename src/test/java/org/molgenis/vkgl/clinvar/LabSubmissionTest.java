@@ -20,7 +20,6 @@ import org.molgenis.vkgl.clinvar.model.ConsensusLine;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
 import org.molgenis.vkgl.clinvar.model.SubmissionLine;
 import org.molgenis.vkgl.clinvar.model.Type;
-import org.molgenis.vkgl.clinvar.model.VariantGeneId;
 import org.molgenis.vkgl.clinvar.model.VariantId;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,7 +42,18 @@ class LabSubmissionTest {
           .nrLabs(1)
           .type(Type.total_agreement)
           .build();
-  SubmissionLine submissionLine1 = new SubmissionLine(consensusLine1, umcg, null);
+  MappingLine mappingLine1 =
+      MappingLine.builder()
+          .chromosome("1")
+          .start(2)
+          .stop(3)
+          .ref("T")
+          .alt("A")
+          .gene("GENE")
+          .clinVarAccession("345")
+          .classification(Classification.b)
+          .build();
+  SubmissionLine submissionLine1 = new SubmissionLine(consensusLine1, umcg, mappingLine1);
 
   ConsensusLine consensusLine2 =
       ConsensusLine.builder()
@@ -57,18 +67,7 @@ class LabSubmissionTest {
           .nrLabs(1)
           .type(Type.total_agreement)
           .build();
-  MappingLine mappingLine2 =
-      MappingLine.builder()
-          .chromosome("1")
-          .start(2)
-          .stop(3)
-          .ref("T")
-          .alt("A")
-          .gene("GENE2")
-          .clinVarAccession("234")
-          .classification(Classification.b)
-          .build();
-  SubmissionLine submissionLine2 = new SubmissionLine(consensusLine2, umcg, mappingLine2);
+  SubmissionLine submissionLine2 = new SubmissionLine(consensusLine2, umcg, mappingLine1);
 
   ConsensusLine consensusLine3 =
       ConsensusLine.builder()
@@ -82,18 +81,7 @@ class LabSubmissionTest {
           .nrLabs(1)
           .type(Type.total_agreement)
           .build();
-  MappingLine mappingLine3 =
-      MappingLine.builder()
-          .chromosome("1")
-          .start(2)
-          .stop(3)
-          .ref("T")
-          .alt("A")
-          .gene("GENE3")
-          .clinVarAccession("345")
-          .classification(Classification.b)
-          .build();
-  SubmissionLine submissionLine3 = new SubmissionLine(consensusLine3, umcg, mappingLine3);
+  SubmissionLine submissionLine3 = new SubmissionLine(consensusLine3, umcg, mappingLine1);
   ConsensusLine consensusLine4 =
       ConsensusLine.builder()
           .chromosome("1")
@@ -113,7 +101,7 @@ class LabSubmissionTest {
           .stop(3)
           .ref("T")
           .alt("A")
-          .gene("GENE3")
+          .gene("GENE2")
           .clinVarAccession("456")
           .classification(Classification.b)
           .build();
@@ -201,6 +189,9 @@ class LabSubmissionTest {
     Map<VariantId, SubmissionLine> expected =
         Collections.singletonMap(new VariantId("1", 2, 3, "T", "A"), submissionLine1);
 
+    doReturn(true).when(mapping).containsKey(umcg, new VariantId("1", 2, 3, "T", "A"));
+    doReturn(mappingLine1).when(mapping).getMapping(umcg, new VariantId("1", 2, 3, "T", "A"));
+
     labSubmission.addConsensusLine(consensusLine1);
 
     assertEquals(expected, labSubmission.getConsensusLines());
@@ -208,11 +199,8 @@ class LabSubmissionTest {
 
   @Test
   void addConsensusLineDuplicated() {
-    doReturn(false).when(mapping).containsKey(umcg, new VariantGeneId(consensusLine1));
-    doReturn(true).when(mapping).containsKey(umcg, new VariantGeneId(consensusLine2));
-    doReturn(mappingLine2).when(mapping).getMapping(umcg, new VariantGeneId(consensusLine2));
-    doReturn(true).when(mapping).containsKey(umcg, new VariantGeneId(consensusLine3));
-    doReturn(mappingLine3).when(mapping).getMapping(umcg, new VariantGeneId(consensusLine3));
+    doReturn(true).when(mapping).containsKey(umcg, new VariantId("1", 2, 3, "T", "A"));
+    doReturn(mappingLine1).when(mapping).getMapping(umcg, new VariantId("1", 2, 3, "T", "A"));
 
     Map<VariantId, Set<SubmissionLine>> expectedDuplicates =
         Collections.singletonMap(
@@ -291,18 +279,17 @@ class LabSubmissionTest {
   @Test
   void getMissedAccessions() {
     when(mapping.getAllMappingLines(umcg))
-        .thenReturn(Arrays.asList(mappingLine2, mappingLine3, mappingLine4, mappingLine5));
+        .thenReturn(Arrays.asList(mappingLine1, mappingLine4, mappingLine5));
 
-    doReturn(false).when(mapping).containsKey(umcg, new VariantGeneId(consensusLine1));
-    doReturn(true).when(mapping).containsKey(umcg, new VariantGeneId(consensusLine2));
-    doReturn(mappingLine2).when(mapping).getMapping(umcg, new VariantGeneId(consensusLine2));
-    doReturn(true).when(mapping).containsKey(umcg, new VariantGeneId(consensusLine4));
-    doReturn(mappingLine4).when(mapping).getMapping(umcg, new VariantGeneId(consensusLine4));
+    doReturn(true).when(mapping).containsKey(umcg, new VariantId(consensusLine2));
+    doReturn(mappingLine1).when(mapping).getMapping(umcg, new VariantId(consensusLine2));
+    doReturn(true).when(mapping).containsKey(umcg, new VariantId(consensusLine4));
+    doReturn(mappingLine4).when(mapping).getMapping(umcg, new VariantId(consensusLine4));
 
     labSubmission.addConsensusLine(consensusLine1);
     labSubmission.addConsensusLine(consensusLine2);
     labSubmission.addConsensusLine(consensusLine4);
 
-    assertEquals(Set.of("345", "567"), labSubmission.getMissedAccessions());
+    assertEquals(Set.of("567"), labSubmission.getMissedAccessions());
   }
 }

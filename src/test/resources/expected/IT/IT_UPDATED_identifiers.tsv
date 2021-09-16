@@ -2,3 +2,7 @@ chromosome	start	stop	ref	alt	gene	clinvar_accession	classification	lab	comment
 2	1	1	A	T	GENE	123456A	b	umcg	Updated: was 'b' is now 'lb'.(IT)
 9	1	1	C	G	GENE	SCV00123456	b	umcg	Updated: was 'b' is now 'lb'.(IT)
 9	1	1	C	G	GENE	SCV00123456	b	umcg	Updated: was 'b' is now 'lb'.(IT)
+10	1	1	C	G	GENE	123456G	lb	amc	Updated: was 'lb' is now 'lb'.(IT)
+10	1	1	C	G	GENE	123456H	lb	umcg	Updated: was 'lb' is now 'lb'.(IT)
+11	1	1	C	G	GENE	123456I	lb	amc	Updated: was 'lb' is now 'b'.(IT)
+11	1	1	C	G	GENE	123456J	lb	umcg	Updated: was 'lb' is now 'b'.(IT)

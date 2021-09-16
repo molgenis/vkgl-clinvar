@@ -8,10 +8,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 class SubmissionLineTest {
 
   @ParameterizedTest
-  @CsvSource({"b,lb,true", "p,p,false", "vus,vus,false"})
-  void isChanged(Classification consensusClass, Classification mappingClass, boolean expected) {
-    ConsensusLine consensusLine = ConsensusLine.builder().amc(consensusClass).build();
-    MappingLine mappingLine = MappingLine.builder().classification(mappingClass).build();
+  @CsvSource({"b,lb,gene1,true", "p,p,gene1,false", "vus,vus,gene1,false", "vus,vus,gene2,true"})
+  void isChanged(Classification consensusClass, Classification mappingClass, String gene, boolean expected) {
+    ConsensusLine consensusLine = ConsensusLine.builder().amc(consensusClass).gene("gene1").build();
+    MappingLine mappingLine = MappingLine.builder().classification(mappingClass).gene(gene).build();
     SubmissionLine submissionLine =
         SubmissionLine.builder().lab(Lab.amc).consensusLine(consensusLine).mappingLine(mappingLine)
             .build();

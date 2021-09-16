@@ -106,16 +106,8 @@ public class SubmissionDecorator {
     return mappings;
   }
 
-  public Collection<String> getAccessionsToDelete(Lab lab, boolean isDeleteDuplicates) {
+  public Collection<String> getAccessionsToDelete(Lab lab) {
     Set<String> accessions = new HashSet<>();
-    if (isDeleteDuplicates) {
-      getDuplicated(lab).values().stream()
-          .forEach(
-              duplicates ->
-                  duplicates.stream()
-                      .filter(line -> (line.getMappingLine() != null))
-                      .forEach(line -> accessions.add(line.getClinVarAccession())));
-    }
     getInvalid(lab).stream()
         .filter(line -> (line.getMappingLine() != null))
         .forEach(line -> accessions.add(line.getClinVarAccession()));
