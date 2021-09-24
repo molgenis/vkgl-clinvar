@@ -20,8 +20,6 @@ class AppCommandLineOptions {
   static final String OPT_OUTPUT_DIR_LONG = "output";
   static final String OPT_RELEASE_NAME = "r";
   static final String OPT_RELEASE_NAME_LONG = "release";
-  static final String OPT_DUPLICATE_MODE = "dd";
-  static final String OPT_DUPLICATE_LONG = "delete_duplicated";
   static final String OPT_SINGLE_MODE = "s";
   static final String OPT_SINGLE_MODE_LONG = "include_single_lab";
   static final String OPT_FORCE = "f";
@@ -53,7 +51,8 @@ class AppCommandLineOptions {
         Option.builder(OPT_CLINVAR_REPORT)
             .hasArg(true)
             .longOpt(OPT_CLINVAR_REPORT_LONG)
-            .desc("ClinVar Submission reports from previous submission, format: lab1=report path,lab2=report path")
+            .desc(
+                "ClinVar Submission reports from previous submission, format: lab1=report path,lab2=report path")
             .build());
     appOptions.addOption(
         Option.builder(OPT_OUTPUT_DIR)
@@ -68,11 +67,6 @@ class AppCommandLineOptions {
             .required()
             .longOpt(OPT_RELEASE_NAME_LONG)
             .desc("Release name to use in ClinVar file names.")
-            .build());
-    appOptions.addOption(
-        Option.builder(OPT_DUPLICATE_MODE)
-            .longOpt(OPT_DUPLICATE_LONG)
-            .desc("Flag to indicate is existing duplicated should be deleted.")
             .build());
     appOptions.addOption(
         Option.builder(OPT_SINGLE_MODE)
@@ -100,8 +94,7 @@ class AppCommandLineOptions {
     APP_VERSION_OPTIONS = appVersionOptions;
   }
 
-  private AppCommandLineOptions() {
-  }
+  private AppCommandLineOptions() {}
 
   static Options getAppOptions() {
     return APP_OPTIONS;
@@ -125,7 +118,7 @@ class AppCommandLineOptions {
 
   private static void validateMapping(CommandLine commandLine) {
     String mappingPathValue = commandLine.getOptionValue(OPT_MAPPINGS);
-    for(String mapping : mappingPathValue.split(",")){
+    for (String mapping : mappingPathValue.split(",")) {
       validatePath(Path.of(mapping), TSV);
     }
   }

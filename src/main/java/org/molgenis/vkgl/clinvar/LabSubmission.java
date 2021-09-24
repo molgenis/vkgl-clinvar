@@ -5,13 +5,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.molgenis.vkgl.clinvar.model.ConsensusLine;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
 import org.molgenis.vkgl.clinvar.model.SubmissionLine;
-import org.molgenis.vkgl.clinvar.model.VariantGeneId;
 import org.molgenis.vkgl.clinvar.model.VariantId;
 
 public class LabSubmission {
@@ -31,12 +31,11 @@ public class LabSubmission {
   }
 
   public void addConsensusLine(ConsensusLine consensusLine) {
-    VariantGeneId variantGeneId = new VariantGeneId(consensusLine);
     VariantId variantId = new VariantId(consensusLine);
 
     MappingLine mappingLine = null;
-    if (clinVarMapping.containsKey(lab, variantGeneId)) {
-      mappingLine = clinVarMapping.getMapping(lab, variantGeneId);
+    if (clinVarMapping.containsKey(lab, variantId)) {
+      mappingLine = clinVarMapping.getMapping(lab, variantId);
       accessions.add(mappingLine.getClinVarAccession());
     }
     SubmissionLine submissionLine =
@@ -58,15 +57,24 @@ public class LabSubmission {
   }
 
   public void variantTriage(boolean isSubmitSingleLine) {
+    addMostSevereDuplicates();
     consensusLines.values().stream().forEach(line -> processLine(line, isSubmitSingleLine));
+  }
+
+  private void addMostSevereDuplicates() {
+    for (Entry<VariantId, Set<SubmissionLine>> entry : duplicateLines.entrySet()) {
+      SubmissionLine mostSevereLine = DuplicateVariantUtil.getMostSevereVariant(entry.getValue());
+      consensusLines.put(entry.getKey(), mostSevereLine);
+    }
   }
 
   private void processLine(SubmissionLine submissionLine, boolean isSubmitSingleLine) {
     MappingLine mappingLine = submissionLine.getMappingLine();
     if (!submissionLine.isChanged()) {
       unchangedLines.add(submissionLine);
-    } else if (((submissionLine.isSingleLab() && !isSubmitSingleLine) || !submissionLine
-        .isValidType() || submissionLine.isSv())) {
+    } else if (((submissionLine.isSingleLab() && !isSubmitSingleLine)
+        || !submissionLine.isValidType()
+        || submissionLine.isSv())) {
       processInvalidLine(submissionLine, isSubmitSingleLine, mappingLine);
     } else {
       if (mappingLine != null) {
@@ -80,8 +88,8 @@ public class LabSubmission {
     }
   }
 
-  private void processInvalidLine(SubmissionLine submissionLine, boolean isSubmitSingleLine,
-      MappingLine mappingLine) {
+  private void processInvalidLine(
+      SubmissionLine submissionLine, boolean isSubmitSingleLine, MappingLine mappingLine) {
     if (submissionLine.isSv() && submissionLine.getMappingLine() != null) {
       throw new SvWithAccessionException();
     } else if (submissionLine.isSingleLab() && !isSubmitSingleLine && mappingLine != null) {

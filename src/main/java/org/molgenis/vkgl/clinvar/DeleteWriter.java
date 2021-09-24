@@ -29,8 +29,9 @@ public class DeleteWriter {
   public void write(Collection<String> deletedAccessions, Lab lab) {
     try (FileOutputStream fileOutputStream =
         new FileOutputStream(
-            Path.of(outputDir.toString(),
-                String.format("%s_%s.%s", lab.name(), release, DELETES_SHEET))
+            Path.of(
+                    outputDir.toString(),
+                    String.format("%s_%s.%s", lab.name(), release, DELETES_SHEET))
                 .toFile())) {
       fileOutputStream.write(HEADER.getBytes());
       deletedAccessions.stream()

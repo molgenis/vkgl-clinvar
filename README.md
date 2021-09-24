@@ -10,8 +10,6 @@ usage: java -jar vkgl-clinvar-writer.jar -i <arg> [-m <arg>] [-c <arg>] -o
                            path,lab2=report path
  -o,--output <arg>         Directory to write output to.
  -r,--release <arg>        Release name to use in ClinVar file names.
- -dd,--delete_duplicated   Flag to indicate is existing duplicated should
-                           be deleted.
  -s,--include_single_lab   Flag to indicate that single lab submissions
                            should also be submitted.
  -f,--force                Override the output files if output directory
@@ -29,7 +27,6 @@ There is a bit of hocus pocus going on around the ClinVar SCV's (identifiers), m
 - *_UNCHANGED_log.tsv: always provide this one, it contains identifiers for unchanged record, those are not resubmitted.
 - *_UPDATED_log.tsv: don't provide those, updated record SCV's are obtained from the ClinVar Submission report.
 - *_REMOVED_log.tsv: Only provide if removed records were not removed from ClinVar.
-- *_DUPLICATED_log.tsv: Provide if records that became duplicated in last release were not removed from ClinVar.
 
 'c' / 'clinVar': Here the submission report from ClinVar for the previous release should be provided for each lab. The argument is a comma separated list of key=value pairs.
 
@@ -43,12 +40,12 @@ Variant longer than 15 nucleotides are not submitted, ClinVar has slightly diffe
 A ```.Deletes``` sheet is created for every lab, containing accessions that are no longer present or valid.
 Accession can become invalid if:
 - The consensusline is based on a single lab and the "include single lab" flag is false.
-- A duplicate (same chrom pos ref alt) was provided for the same lab, and the "delete duplicates" flag is true.
 - If the consensus status has become "disagreement" or "total_disagreement"
 
 ##Duplicates
-Setting the --delete_duplicated flag will remove ClinVar accession that have been duplicated.
-Please note that duplicates are **not added** if the flag is not set.
+Since version 1.1.x the most severe variant is submitted to ClinVar in case of duplicates.
+If multiple duplicates have the same classification these duplicates are sorted alphabetically on genename, and the first one is selected.
+If more than one ClinVar accession is found for a single lab for the list of duplicates an exception is thrown, since this should not be possible since we never submitted any duplicates to ClinVar.
 
 ## Submission
 

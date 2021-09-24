@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Map;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
-import org.molgenis.vkgl.clinvar.model.VariantGeneId;
+import org.molgenis.vkgl.clinvar.model.VariantId;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ClinVarMapping {
 
-  EnumMap<Lab, Map<VariantGeneId, MappingLine>> mapping = new EnumMap<>(Lab.class);
+  EnumMap<Lab, Map<VariantId, MappingLine>> mapping = new EnumMap<>(Lab.class);
   List<String> processedAccessions = new ArrayList<>();
 
-  private Map<VariantGeneId, MappingLine> getMapping(Lab lab) {
+  private Map<VariantId, MappingLine> getMapping(Lab lab) {
     if (!mapping.containsKey(lab)) {
-      Map<VariantGeneId, MappingLine> labMapping = new HashMap<>();
+      Map<VariantId, MappingLine> labMapping = new HashMap<>();
       mapping.put(lab, labMapping);
     }
     return mapping.get(lab);
@@ -28,13 +28,13 @@ public class ClinVarMapping {
   public void addMapping(MappingLine mappingLine) {
     isAccessionUnique(mappingLine);
     Lab lab = Lab.valueOf(mappingLine.getLab());
-    Map<VariantGeneId, MappingLine> labMapping = getMapping(lab);
-    labMapping.put(new VariantGeneId(mappingLine), mappingLine);
+    Map<VariantId, MappingLine> labMapping = getMapping(lab);
+    labMapping.put(new VariantId(mappingLine), mappingLine);
     mapping.put(lab, labMapping);
   }
 
   private void isAccessionUnique(MappingLine mappingLine) {
-    //Accession may not appear multiple time, not even with different version postfixes
+    // Accession may not appear multiple time, not even with different version postfixes
     String mainAccessionId = mappingLine.getClinVarAccession().split("\\.")[0];
     if (processedAccessions.contains(mainAccessionId)) {
       throw new DuplicateAccessionException(mainAccessionId);
@@ -43,18 +43,18 @@ public class ClinVarMapping {
     }
   }
 
-  public MappingLine getMapping(Lab lab, VariantGeneId variantGeneId) {
-    Map<VariantGeneId, MappingLine> labMapping = getMapping(lab);
-    return labMapping.get(variantGeneId);
+  public MappingLine getMapping(Lab lab, VariantId variantId) {
+    Map<VariantId, MappingLine> labMapping = getMapping(lab);
+    return labMapping.get(variantId);
   }
 
   public Collection<MappingLine> getAllMappingLines(Lab lab) {
-    Map<VariantGeneId, MappingLine> labMapping = getMapping(lab);
+    Map<VariantId, MappingLine> labMapping = getMapping(lab);
     return labMapping.values();
   }
 
-  public boolean containsKey(Lab lab, VariantGeneId variantGeneId) {
-    Map<VariantGeneId, MappingLine> labMapping = getMapping(lab);
-    return labMapping.containsKey(variantGeneId);
+  public boolean containsKey(Lab lab, VariantId variantId) {
+    Map<VariantId, MappingLine> labMapping = getMapping(lab);
+    return labMapping.containsKey(variantId);
   }
 }

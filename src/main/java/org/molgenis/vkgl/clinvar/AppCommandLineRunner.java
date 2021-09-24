@@ -3,7 +3,6 @@ package org.molgenis.vkgl.clinvar;
 import static java.util.Objects.requireNonNull;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_CLINVAR_REPORT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DEBUG;
-import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DUPLICATE_MODE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_FORCE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_INPUT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_MAPPINGS;
@@ -57,7 +56,7 @@ class AppCommandLineRunner implements CommandLineRunner {
   public void run(String... args) {
     if (args.length == 1
         && (args[0].equals("-" + AppCommandLineOptions.OPT_VERSION)
-        || args[0].equals("--" + AppCommandLineOptions.OPT_VERSION_LONG))) {
+            || args[0].equals("--" + AppCommandLineOptions.OPT_VERSION_LONG))) {
       LOGGER.info("{} {}", appName, appVersion);
       return;
     }
@@ -89,19 +88,17 @@ class AppCommandLineRunner implements CommandLineRunner {
     Path inputPath = Path.of(inputPathValue);
     String mappingPathValue = commandLine.getOptionValue(OPT_MAPPINGS);
     List<Path> mappings = mapMappings(mappingPathValue);
-    Map<Lab,Path> clinVarMappings = getClinVarMappings(commandLine);
+    Map<Lab, Path> clinVarMappings = getClinVarMappings(commandLine);
     Path outputPath = Path.of(commandLine.getOptionValue(OPT_OUTPUT_DIR));
     String release = commandLine.getOptionValue(OPT_RELEASE_NAME);
     boolean overwriteOutput = commandLine.hasOption(OPT_FORCE);
 
     boolean debugMode = commandLine.hasOption(OPT_DEBUG);
     boolean isIncludeSingleLab = commandLine.hasOption(OPT_SINGLE_MODE);
-    boolean isDeleteDuplicates = commandLine.hasOption(OPT_DUPLICATE_MODE);
 
     return Settings.builder()
         .input(inputPath)
         .includeSingleLab(isIncludeSingleLab)
-        .deleteDuplicates(isDeleteDuplicates)
         .mappings(mappings)
         .clinVarMapping(clinVarMappings)
         .outputDir(outputPath)
@@ -132,7 +129,7 @@ class AppCommandLineRunner implements CommandLineRunner {
 
   private List<Path> mapMappings(String mappingPathValue) {
     List<Path> mappings = new ArrayList<>();
-    for(String mapping : mappingPathValue.split(",")){
+    for (String mapping : mappingPathValue.split(",")) {
       mappings.add(Path.of(mapping));
     }
     return mappings;

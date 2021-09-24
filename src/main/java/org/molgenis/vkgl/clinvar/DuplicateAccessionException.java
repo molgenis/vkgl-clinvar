@@ -6,6 +6,6 @@ public class DuplicateAccessionException extends RuntimeException {
       "ClinVar Accession '%s' was seen more than once, this indicates a problem with your mapping files.";
 
   public DuplicateAccessionException(String accession) {
-    super(String.format(MESSAGE,accession));
+    super(String.format(MESSAGE, accession));
   }
 }

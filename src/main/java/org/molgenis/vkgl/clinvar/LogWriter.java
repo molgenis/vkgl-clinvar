@@ -15,8 +15,7 @@ public class LogWriter {
   public enum LineType {
     UNCHANGED,
     UPDATED,
-    REMOVED,
-    DUPLICATED
+    REMOVED
   }
 
   public static final String FILE_NAME_FORMAT = "%s_%s_%s";
@@ -30,7 +29,6 @@ public class LogWriter {
   }
 
   public void write(SubmissionDecorator submissionDecorator) {
-    write(submissionDecorator.getDuplicatedMappings(), LineType.DUPLICATED);
     write(submissionDecorator.getInvalidMappings(), LineType.REMOVED);
     write(submissionDecorator.getUnchangedMappings(), LineType.UNCHANGED);
     write(submissionDecorator.getUpdatedMappings(), LineType.UPDATED);
@@ -40,8 +38,8 @@ public class LogWriter {
     try (FileOutputStream fileOutputStream =
         new FileOutputStream(
             Path.of(
-                settings.getOutputDir().toString(),
-                String.format(FILE_NAME_FORMAT, settings.getRelease(), type, POSTFIX))
+                    settings.getOutputDir().toString(),
+                    String.format(FILE_NAME_FORMAT, settings.getRelease(), type, POSTFIX))
                 .toFile())) {
       fileOutputStream.write(HEADER.getBytes());
       lines.stream()
@@ -72,6 +70,8 @@ public class LogWriter {
         line.getClinVarAccession(),
         line.getClassification(),
         line.getLab(),
-        line.getComment() == null ? "" : (String.format("%s(%s)",line.getComment(), settings.getRelease())));
+        line.getComment() == null
+            ? ""
+            : (String.format("%s(%s)", line.getComment(), settings.getRelease())));
   }
 }

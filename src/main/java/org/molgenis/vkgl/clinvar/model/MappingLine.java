@@ -41,4 +41,7 @@ public class MappingLine implements VariantLine {
 
   @CsvBindByName(column = "comment")
   String comment;
+
+  @CsvBindByName(column = "partOfDuplicate")
+  boolean isPartOfDuplicate;
 }
