@@ -72,8 +72,8 @@ public class VariantWriter {
     try (FileOutputStream fileOutputStream =
         new FileOutputStream(
             Path.of(
-                outputDir.toString(),
-                String.format("%s_%s.%s", lab.name(), release, VARIANT_SHEET))
+                    outputDir.toString(),
+                    String.format("%s_%s.%s", lab.name(), release, VARIANT_SHEET))
                 .toFile())) {
       fileOutputStream.write(HEADER.getBytes());
       variants.stream()

@@ -38,8 +38,8 @@ public class LogWriter {
     try (FileOutputStream fileOutputStream =
         new FileOutputStream(
             Path.of(
-                settings.getOutputDir().toString(),
-                String.format(FILE_NAME_FORMAT, settings.getRelease(), type, POSTFIX))
+                    settings.getOutputDir().toString(),
+                    String.format(FILE_NAME_FORMAT, settings.getRelease(), type, POSTFIX))
                 .toFile())) {
       fileOutputStream.write(HEADER.getBytes());
       lines.stream()
@@ -70,6 +70,8 @@ public class LogWriter {
         line.getClinVarAccession(),
         line.getClassification(),
         line.getLab(),
-        line.getComment() == null ? "" : (String.format("%s(%s)",line.getComment(), settings.getRelease())));
+        line.getComment() == null
+            ? ""
+            : (String.format("%s(%s)", line.getComment(), settings.getRelease())));
   }
 }

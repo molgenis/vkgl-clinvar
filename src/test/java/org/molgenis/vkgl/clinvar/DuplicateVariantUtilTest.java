@@ -17,10 +17,10 @@ import org.molgenis.vkgl.clinvar.model.Type;
 
 class DuplicateVariantUtilTest {
 
-  //no clinvar
-  //single clinvar
-  //multi clinvar -> exception
-  //single clinvar parameterized test with classification combinations
+  // no clinvar
+  // single clinvar
+  // multi clinvar -> exception
+  // single clinvar parameterized test with classification combinations
 
   MappingLine mappingLine1 =
       MappingLine.builder()
@@ -147,13 +147,25 @@ class DuplicateVariantUtilTest {
   @Test
   void getMostSevereVariantMultiAccession() {
     Set<SubmissionLine> variants = Set.of(submissionLine1, submissionLine2, submissionLine4);
-    assertThrows(DuplicateSubmittedAccessionException.class, () ->DuplicateVariantUtil.getMostSevereVariant(variants));
+    assertThrows(
+        DuplicateSubmittedAccessionException.class,
+        () -> DuplicateVariantUtil.getMostSevereVariant(variants));
   }
 
   @ParameterizedTest
-  @CsvSource({"lp,b,vus,GENE3","b,lb,vus,GENE2", "lp,p,lp,GENE1", "b,lb,b,GENE1", "p,vus,lp,GENE3", "vus,vus,vus,GENE1"})
-  void getMostSevereParamterized(Classification classificationA,
-      Classification classificationB,Classification classificationC, String expectedGene) {
+  @CsvSource({
+    "lp,b,vus,GENE3",
+    "b,lb,vus,GENE2",
+    "lp,p,lp,GENE1",
+    "b,lb,b,GENE1",
+    "p,vus,lp,GENE3",
+    "vus,vus,vus,GENE1"
+  })
+  void getMostSevereParamterized(
+      Classification classificationA,
+      Classification classificationB,
+      Classification classificationC,
+      String expectedGene) {
     ConsensusLine consensusLineA =
         ConsensusLine.builder()
             .chromosome("1")
@@ -198,6 +210,8 @@ class DuplicateVariantUtilTest {
 
     Set<SubmissionLine> variants = Set.of(submissionLineA, submissionLineB, submissionLineC);
 
-    assertEquals(expectedGene, DuplicateVariantUtil.getMostSevereVariant(variants).getConsensusLine().getGene());
+    assertEquals(
+        expectedGene,
+        DuplicateVariantUtil.getMostSevereVariant(variants).getConsensusLine().getGene());
   }
 }

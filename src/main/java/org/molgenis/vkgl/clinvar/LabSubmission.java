@@ -62,7 +62,7 @@ public class LabSubmission {
   }
 
   private void addMostSevereDuplicates() {
-    for(Entry<VariantId, Set<SubmissionLine>> entry : duplicateLines.entrySet()){
+    for (Entry<VariantId, Set<SubmissionLine>> entry : duplicateLines.entrySet()) {
       SubmissionLine mostSevereLine = DuplicateVariantUtil.getMostSevereVariant(entry.getValue());
       consensusLines.put(entry.getKey(), mostSevereLine);
     }
@@ -72,8 +72,9 @@ public class LabSubmission {
     MappingLine mappingLine = submissionLine.getMappingLine();
     if (!submissionLine.isChanged()) {
       unchangedLines.add(submissionLine);
-    } else if (((submissionLine.isSingleLab() && !isSubmitSingleLine) || !submissionLine
-        .isValidType() || submissionLine.isSv())) {
+    } else if (((submissionLine.isSingleLab() && !isSubmitSingleLine)
+        || !submissionLine.isValidType()
+        || submissionLine.isSv())) {
       processInvalidLine(submissionLine, isSubmitSingleLine, mappingLine);
     } else {
       if (mappingLine != null) {
@@ -87,8 +88,8 @@ public class LabSubmission {
     }
   }
 
-  private void processInvalidLine(SubmissionLine submissionLine, boolean isSubmitSingleLine,
-      MappingLine mappingLine) {
+  private void processInvalidLine(
+      SubmissionLine submissionLine, boolean isSubmitSingleLine, MappingLine mappingLine) {
     if (submissionLine.isSv() && submissionLine.getMappingLine() != null) {
       throw new SvWithAccessionException();
     } else if (submissionLine.isSingleLab() && !isSubmitSingleLine && mappingLine != null) {

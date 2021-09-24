@@ -34,7 +34,7 @@ public class ClinVarMapping {
   }
 
   private void isAccessionUnique(MappingLine mappingLine) {
-    //Accession may not appear multiple time, not even with different version postfixes
+    // Accession may not appear multiple time, not even with different version postfixes
     String mainAccessionId = mappingLine.getClinVarAccession().split("\\.")[0];
     if (processedAccessions.contains(mainAccessionId)) {
       throw new DuplicateAccessionException(mainAccessionId);

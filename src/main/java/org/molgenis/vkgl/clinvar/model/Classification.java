@@ -5,11 +5,13 @@ import java.util.Map;
 
 @SuppressWarnings("java:S115")
 public enum Classification {
-  b("Benign", 1), lb("Likely benign", 2), vus("Uncertain significance", 3), lp("Likely pathogenic", 4), p(
-      "Pathogenic", 5);
+  b("Benign", 1),
+  lb("Likely benign", 2),
+  vus("Uncertain significance", 3),
+  lp("Likely pathogenic", 4),
+  p("Pathogenic", 5);
 
   private final String longName;
-
 
   private final int numericValue;
 
@@ -29,7 +31,8 @@ public enum Classification {
   private static final Map<String, Classification> map = new HashMap<>(values().length, 1);
 
   static {
-    for (Classification classification : values()) map.put(classification.getLongName(), classification);
+    for (Classification classification : values())
+      map.put(classification.getLongName(), classification);
   }
 
   public static Classification of(String name) {

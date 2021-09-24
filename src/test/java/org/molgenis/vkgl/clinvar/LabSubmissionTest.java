@@ -27,8 +27,7 @@ class LabSubmissionTest {
 
   private LabSubmission labSubmission;
 
-  @Mock
-  ClinVarMapping mapping;
+  @Mock ClinVarMapping mapping;
 
   ConsensusLine consensusLine1 =
       ConsensusLine.builder()
@@ -239,8 +238,7 @@ class LabSubmissionTest {
         () ->
             assertEquals(
                 Set.of(submissionLine1, submissionLine6, submissionLine7),
-                labSubmission.getUpdated())
-    );
+                labSubmission.getUpdated()));
   }
 
   @Test
@@ -261,19 +259,23 @@ class LabSubmissionTest {
     labSubmission.variantTriage(false);
 
     assertAll(
-        () -> assertEquals(Set.of(submissionLine1, submissionLine5, submissionLine7),
-            labSubmission.getInvalid()),
-        () -> assertEquals(Set.of(submissionLine4), labSubmission.getUnchanged()),
         () ->
             assertEquals(
-                Set.of(submissionLine6),
-                labSubmission.getUpdated()),
-        () -> assertEquals("Invalid consensus type: disagreement.",
-            submissionLine5.getMappingLine().getComment()),
-        () -> assertEquals("Updated: was 'p' is now 'b'.",
-            submissionLine6.getMappingLine().getComment()),
-        () -> assertEquals("Invalid: classified by a single lab.",
-            submissionLine7.getMappingLine().getComment()));
+                Set.of(submissionLine1, submissionLine5, submissionLine7),
+                labSubmission.getInvalid()),
+        () -> assertEquals(Set.of(submissionLine4), labSubmission.getUnchanged()),
+        () -> assertEquals(Set.of(submissionLine6), labSubmission.getUpdated()),
+        () ->
+            assertEquals(
+                "Invalid consensus type: disagreement.",
+                submissionLine5.getMappingLine().getComment()),
+        () ->
+            assertEquals(
+                "Updated: was 'p' is now 'b'.", submissionLine6.getMappingLine().getComment()),
+        () ->
+            assertEquals(
+                "Invalid: classified by a single lab.",
+                submissionLine7.getMappingLine().getComment()));
   }
 
   @Test

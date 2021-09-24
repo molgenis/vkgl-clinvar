@@ -30,8 +30,7 @@ public class SubmissionService {
   private SubmissionDecorator submissionDecorator;
   private ClinVarMapping clinVarMapping;
 
-  public SubmissionService(SubmissionDecorator submissionDecorator,
-      ClinVarMapping clinVarMapping) {
+  public SubmissionService(SubmissionDecorator submissionDecorator, ClinVarMapping clinVarMapping) {
     this.submissionDecorator = requireNonNull(submissionDecorator);
     this.clinVarMapping = requireNonNull(clinVarMapping);
   }
@@ -53,7 +52,7 @@ public class SubmissionService {
 
   private void readClinVarReport(Settings settings) {
     if (settings.getClinVarMapping() != null) {
-      for(Entry<Lab,Path> entry : settings.getClinVarMapping().entrySet())
+      for (Entry<Lab, Path> entry : settings.getClinVarMapping().entrySet())
         try (Reader reader = Files.newBufferedReader(entry.getValue(), UTF_8)) {
           CsvToBean<ClinVarLine> csvToBean =
               new CsvToBeanBuilder<ClinVarLine>(reader)
@@ -96,9 +95,9 @@ public class SubmissionService {
   private String processClinVarAccession(String accession) {
     String[] clinvarAccessionSplit = accession.split("\\.");
     String clinVarAccession;
-    if(clinvarAccessionSplit.length == 2){
+    if (clinvarAccessionSplit.length == 2) {
       clinVarAccession = clinvarAccessionSplit[0];
-    }else{
+    } else {
       throw new InvalidClinVarAccessionException(accession);
     }
     return clinVarAccession;
@@ -117,7 +116,6 @@ public class SubmissionService {
     }
     return result;
   }
-
 
   private void processMapping(MappingLine line) {
     clinVarMapping.addMapping(line);

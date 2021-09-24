@@ -11,5 +11,4 @@ class InvalidClinVarVariantDescriptionExceptionTest {
         "Unable to parse ClinVar variant description: 'non parsable xml'.",
         new InvalidClinVarVariantDescriptionException("non parsable xml").getMessage());
   }
-
 }

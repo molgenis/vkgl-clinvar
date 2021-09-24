@@ -32,28 +32,17 @@ import org.molgenis.vkgl.clinvar.model.VariantId;
 @ExtendWith(MockitoExtension.class)
 class SubmissionDecoratorTest {
 
-  @Mock
-  ClinVarMapping mapping;
-  @Mock
-  LabSubmission umcgLabSubmission;
-  @Mock
-  LabSubmission amcLabSubmission;
-  @Mock
-  LabSubmission otherLabSubmission;
-  @Mock
-  SubmissionLine submissionLine1;
-  @Mock
-  SubmissionLine submissionLine2;
-  @Mock
-  SubmissionLine submissionLine3;
-  @Mock
-  SubmissionLine submissionLine4;
-  @Mock
-  MappingLine mappingLine1;
-  @Mock
-  MappingLine mappingLine3;
-  @Mock
-  MappingLine mappingLine4;
+  @Mock ClinVarMapping mapping;
+  @Mock LabSubmission umcgLabSubmission;
+  @Mock LabSubmission amcLabSubmission;
+  @Mock LabSubmission otherLabSubmission;
+  @Mock SubmissionLine submissionLine1;
+  @Mock SubmissionLine submissionLine2;
+  @Mock SubmissionLine submissionLine3;
+  @Mock SubmissionLine submissionLine4;
+  @Mock MappingLine mappingLine1;
+  @Mock MappingLine mappingLine3;
+  @Mock MappingLine mappingLine4;
 
   private SubmissionDecorator submissionDecorator;
 
@@ -171,9 +160,7 @@ class SubmissionDecoratorTest {
     doReturn(mappingLine4).when(submissionLine4).getMappingLine();
     when(umcgLabSubmission.getInvalid()).thenReturn(Set.of(submissionLine3, submissionLine4));
 
-    assertEquals(
-        Set.of("345", "234"),
-        submissionDecorator.getAccessionsToDelete(umcg));
+    assertEquals(Set.of("345", "234"), submissionDecorator.getAccessionsToDelete(umcg));
   }
 
   @Test

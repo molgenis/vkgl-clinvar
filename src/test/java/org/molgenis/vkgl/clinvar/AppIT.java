@@ -16,8 +16,7 @@ import org.springframework.util.ResourceUtils;
 
 class AppIT {
 
-  @TempDir
-  Path sharedTempDir;
+  @TempDir Path sharedTempDir;
 
   @Test
   void test() throws IOException {
@@ -25,8 +24,19 @@ class AppIT {
     String mappingFile = ResourceUtils.getFile("classpath:IT_Mapping.tsv").toString();
     String clinvarFile = ResourceUtils.getFile("classpath:IT_ClinVar_report.txt").toString();
 
-    String[] args = {"-i", consensusFile, "-m", mappingFile, "-c", String.format("umcg=%s", clinvarFile) ,"-o", sharedTempDir.toString(), "-r",
-        "IT", "-dd" };
+    String[] args = {
+      "-i",
+      consensusFile,
+      "-m",
+      mappingFile,
+      "-c",
+      String.format("umcg=%s", clinvarFile),
+      "-o",
+      sharedTempDir.toString(),
+      "-r",
+      "IT",
+      "-dd"
+    };
     SpringApplication.run(App.class, args);
 
     File[] expectedFiles = new File("src/test/resources/expected/IT").listFiles();
@@ -47,7 +57,7 @@ class AppIT {
   }
 
   private Set<String> getLinesSet(Path path) throws IOException {
-    return Arrays.stream(Files.readString(path).replaceAll("\\R", "\n").split("\n")).collect(
-        Collectors.toSet());
+    return Arrays.stream(Files.readString(path).replaceAll("\\R", "\n").split("\n"))
+        .collect(Collectors.toSet());
   }
 }

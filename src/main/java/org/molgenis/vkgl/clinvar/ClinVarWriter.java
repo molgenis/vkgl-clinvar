@@ -20,9 +20,7 @@ public class ClinVarWriter {
   public void write(SubmissionDecorator submissionDecorator) {
     for (Lab lab : Lab.values()) {
       variantWriter.write(submissionDecorator.getUpdated(lab), lab);
-      deleteWriter
-          .write(submissionDecorator.getAccessionsToDelete(lab),
-              lab);
+      deleteWriter.write(submissionDecorator.getAccessionsToDelete(lab), lab);
     }
     logWriter.write(submissionDecorator);
   }

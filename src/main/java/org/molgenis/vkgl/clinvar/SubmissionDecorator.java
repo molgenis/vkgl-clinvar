@@ -122,9 +122,8 @@ public class SubmissionDecorator {
     }
   }
 
-  //for testing
-  public void setSubmissionLabContextMap(
-      Map<Lab, LabSubmission> submissionLabContextMap) {
+  // for testing
+  public void setSubmissionLabContextMap(Map<Lab, LabSubmission> submissionLabContextMap) {
     this.submissionLabContextMap = submissionLabContextMap;
   }
 }

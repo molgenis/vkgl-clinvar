@@ -11,5 +11,4 @@ class InvalidClinVarArgumentExceptionTest {
         "Expecting lab/path key value pairs (lab1name=path1,lab2name=path2), got 'filepath' instead.",
         new InvalidClinVarArgumentException("filepath").getMessage());
   }
-
 }

@@ -22,7 +22,7 @@ class SubmissionServiceTest {
   private SubmissionService service;
 
   @BeforeEach
-  private void setUp(){
+  private void setUp() {
     service = new SubmissionService(submissionDecorator, clinVarMapping);
   }
 
@@ -69,5 +69,5 @@ class SubmissionServiceTest {
         () -> {
           service.processClinVar(clinVarLine, Lab.amc);
         });
-    }
+  }
 }

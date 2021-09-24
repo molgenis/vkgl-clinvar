@@ -9,11 +9,15 @@ class SubmissionLineTest {
 
   @ParameterizedTest
   @CsvSource({"b,lb,gene1,true", "p,p,gene1,false", "vus,vus,gene1,false", "vus,vus,gene2,true"})
-  void isChanged(Classification consensusClass, Classification mappingClass, String gene, boolean expected) {
+  void isChanged(
+      Classification consensusClass, Classification mappingClass, String gene, boolean expected) {
     ConsensusLine consensusLine = ConsensusLine.builder().amc(consensusClass).gene("gene1").build();
     MappingLine mappingLine = MappingLine.builder().classification(mappingClass).gene(gene).build();
     SubmissionLine submissionLine =
-        SubmissionLine.builder().lab(Lab.amc).consensusLine(consensusLine).mappingLine(mappingLine)
+        SubmissionLine.builder()
+            .lab(Lab.amc)
+            .consensusLine(consensusLine)
+            .mappingLine(mappingLine)
             .build();
     assertEquals(expected, submissionLine.isChanged());
   }
@@ -28,10 +32,10 @@ class SubmissionLineTest {
 
   @ParameterizedTest
   @CsvSource({
-      "agreement,true",
-      "total_agreement,true",
-      "disagreement,false",
-      "total_disagreement,false"
+    "agreement,true",
+    "total_agreement,true",
+    "disagreement,false",
+    "total_disagreement,false"
   })
   void isValidType(Type type, boolean expected) {
     ConsensusLine consensusLine = ConsensusLine.builder().type(type).build();

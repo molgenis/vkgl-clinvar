@@ -14,12 +14,12 @@ public class SubmissionLine {
   public static final int MAX_NON_SV_SIZE = 15;
   ConsensusLine consensusLine;
   Lab lab;
-  @Nullable
-  MappingLine mappingLine;
+  @Nullable MappingLine mappingLine;
 
   public boolean isChanged() {
-    return mappingLine == null || !consensusLine.getClassification(lab)
-        .equals(mappingLine.getClassification()) || !mappingLine.getGene().equals(consensusLine.getGene());
+    return mappingLine == null
+        || !consensusLine.getClassification(lab).equals(mappingLine.getClassification())
+        || !mappingLine.getGene().equals(consensusLine.getGene());
   }
 
   public boolean isSingleLab() {

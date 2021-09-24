@@ -56,7 +56,7 @@ class AppCommandLineRunner implements CommandLineRunner {
   public void run(String... args) {
     if (args.length == 1
         && (args[0].equals("-" + AppCommandLineOptions.OPT_VERSION)
-        || args[0].equals("--" + AppCommandLineOptions.OPT_VERSION_LONG))) {
+            || args[0].equals("--" + AppCommandLineOptions.OPT_VERSION_LONG))) {
       LOGGER.info("{} {}", appName, appVersion);
       return;
     }
@@ -88,7 +88,7 @@ class AppCommandLineRunner implements CommandLineRunner {
     Path inputPath = Path.of(inputPathValue);
     String mappingPathValue = commandLine.getOptionValue(OPT_MAPPINGS);
     List<Path> mappings = mapMappings(mappingPathValue);
-    Map<Lab,Path> clinVarMappings = getClinVarMappings(commandLine);
+    Map<Lab, Path> clinVarMappings = getClinVarMappings(commandLine);
     Path outputPath = Path.of(commandLine.getOptionValue(OPT_OUTPUT_DIR));
     String release = commandLine.getOptionValue(OPT_RELEASE_NAME);
     boolean overwriteOutput = commandLine.hasOption(OPT_FORCE);
@@ -129,7 +129,7 @@ class AppCommandLineRunner implements CommandLineRunner {
 
   private List<Path> mapMappings(String mappingPathValue) {
     List<Path> mappings = new ArrayList<>();
-    for(String mapping : mappingPathValue.split(",")){
+    for (String mapping : mappingPathValue.split(",")) {
       mappings.add(Path.of(mapping));
     }
     return mappings;
