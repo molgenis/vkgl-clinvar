@@ -14,7 +14,7 @@ public class ClinVarLine {
   @CsvBindByName(column = "SCV", required = true)
   String scv;
 
-  @CsvBindByName(column = "Your_variant_description", required = true)
+  @CsvBindByName(column = "Your_variant_description_chromosome_coordinates", required = true)
   String variantDescription;
 
   @CsvBindByName(column = "Submitted_gene", required = true)

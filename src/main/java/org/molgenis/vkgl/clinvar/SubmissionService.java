@@ -5,7 +5,11 @@ import static java.util.Objects.requireNonNull;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
@@ -27,6 +31,7 @@ import org.xml.sax.InputSource;
 @Component
 public class SubmissionService {
 
+  private static final String CLINVAR_HEADER = "#Your_variant_id\tVariationID";
   private SubmissionDecorator submissionDecorator;
   private ClinVarMapping clinVarMapping;
 
@@ -52,11 +57,12 @@ public class SubmissionService {
 
   private void readClinVarReport(Settings settings) {
     if (settings.getClinVarMapping() != null) {
-      for (Entry<Lab, Path> entry : settings.getClinVarMapping().entrySet())
+      for (Entry<Lab, Path> entry : settings.getClinVarMapping().entrySet()) {
+        int nrOfLinesToSkip = getNumberOfLinesToSkip(entry.getValue().toFile());
         try (Reader reader = Files.newBufferedReader(entry.getValue(), UTF_8)) {
           CsvToBean<ClinVarLine> csvToBean =
               new CsvToBeanBuilder<ClinVarLine>(reader)
-                  .withSkipLines(23)
+                  .withSkipLines(nrOfLinesToSkip)
                   .withSeparator('\t')
                   .withType(ClinVarLine.class)
                   .build();
@@ -64,7 +70,31 @@ public class SubmissionService {
         } catch (IOException e) {
           throw new UncheckedIOException(e);
         }
+      }
     }
+    }
+
+  private int getNumberOfLinesToSkip(File file) {
+    int nrOfLinesToSkip = -1;
+    try (LineNumberReader lineNumberReader =
+        new LineNumberReader(new FileReader(file))) {
+      boolean isHeaderFound = false;
+      String line;
+      while ((line = lineNumberReader.readLine()) != null && !isHeaderFound) {
+        if (line.startsWith(CLINVAR_HEADER)) {
+          nrOfLinesToSkip = lineNumberReader.getLineNumber() - 1;
+          isHeaderFound = true;
+        }
+      }
+    } catch (FileNotFoundException fileNotFoundException) {
+      fileNotFoundException.printStackTrace();
+    } catch (IOException ioException) {
+      ioException.printStackTrace();
+    }
+    if(nrOfLinesToSkip == -1){
+      throw new HeaderNotFoundException(file.getName());
+    }
+    return nrOfLinesToSkip;
   }
 
   protected void processClinVar(ClinVarLine line, Lab lab) {
