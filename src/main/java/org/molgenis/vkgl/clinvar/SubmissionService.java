@@ -6,7 +6,6 @@ import static java.util.Objects.requireNonNull;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -86,10 +85,8 @@ public class SubmissionService {
           isHeaderFound = true;
         }
       }
-    } catch (FileNotFoundException fileNotFoundException) {
-      fileNotFoundException.printStackTrace();
     } catch (IOException ioException) {
-      ioException.printStackTrace();
+      throw new UncheckedIOException(ioException);
     }
     if(nrOfLinesToSkip == -1){
       throw new HeaderNotFoundException(file.getName());
