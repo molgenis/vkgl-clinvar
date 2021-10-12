@@ -2,6 +2,8 @@ package org.molgenis.vkgl.clinvar;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+import static org.molgenis.vkgl.clinvar.ClinVarHeaderEnum.NEW;
+import static org.molgenis.vkgl.clinvar.ClinVarHeaderEnum.OLD;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -18,7 +20,10 @@ import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.molgenis.vkgl.clinvar.model.Classification;
+import org.molgenis.vkgl.clinvar.model.ClinVarHeaderMeta;
 import org.molgenis.vkgl.clinvar.model.ClinVarLine;
+import org.molgenis.vkgl.clinvar.model.ClinVarLineNew;
+import org.molgenis.vkgl.clinvar.model.ClinVarLineOld;
 import org.molgenis.vkgl.clinvar.model.ConsensusLine;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
@@ -31,6 +36,7 @@ import org.xml.sax.InputSource;
 public class SubmissionService {
 
   private static final String CLINVAR_HEADER = "#Your_variant_id\tVariationID";
+  private static final String CLINVAR_HEADER_OLD = "#Your_variant_id\tVariantID";
   private SubmissionDecorator submissionDecorator;
   private ClinVarMapping clinVarMapping;
 
@@ -57,41 +63,50 @@ public class SubmissionService {
   private void readClinVarReport(Settings settings) {
     if (settings.getClinVarMapping() != null) {
       for (Entry<Lab, Path> entry : settings.getClinVarMapping().entrySet()) {
-        int nrOfLinesToSkip = getNumberOfLinesToSkip(entry.getValue().toFile());
+        ClinVarHeaderMeta headerMeta = getHeaderMeta(entry.getValue().toFile());
+        int nrOfLinesToSkip = headerMeta.getNrOfHeaders() - 1;
         try (Reader reader = Files.newBufferedReader(entry.getValue(), UTF_8)) {
-          CsvToBean<ClinVarLine> csvToBean =
-              new CsvToBeanBuilder<ClinVarLine>(reader)
-                  .withSkipLines(nrOfLinesToSkip)
-                  .withSeparator('\t')
-                  .withType(ClinVarLine.class)
-                  .build();
+          CsvToBean<ClinVarLine> csvToBean;
+          if (headerMeta.getType() == OLD) {
+            csvToBean = getCsvToBean(ClinVarLineOld.class, reader, nrOfLinesToSkip);
+          } else {
+            csvToBean = getCsvToBean(ClinVarLineNew.class, reader, nrOfLinesToSkip);
+          }
           csvToBean.forEach(line -> processClinVar(line, entry.getKey()));
         } catch (IOException e) {
           throw new UncheckedIOException(e);
         }
       }
     }
-    }
+  }
 
-  private int getNumberOfLinesToSkip(File file) {
-    int nrOfLinesToSkip = -1;
-    try (LineNumberReader lineNumberReader =
-        new LineNumberReader(new FileReader(file))) {
-      boolean isHeaderFound = false;
+  public static <T extends ClinVarLine> CsvToBean<T> getCsvToBean(
+      Class T, Reader reader, int nrOfLinesToSkip) {
+    return new CsvToBeanBuilder<T>(reader)
+        .withSkipLines(nrOfLinesToSkip)
+        .withSeparator('\t')
+        .withType(T)
+        .build();
+  }
+
+  private ClinVarHeaderMeta getHeaderMeta(File file) {
+    ClinVarHeaderMeta clinVarHeaderMeta = null;
+    try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(file))) {
       String line;
-      while ((line = lineNumberReader.readLine()) != null && !isHeaderFound) {
+      while ((line = lineNumberReader.readLine()) != null && clinVarHeaderMeta == null) {
         if (line.startsWith(CLINVAR_HEADER)) {
-          nrOfLinesToSkip = lineNumberReader.getLineNumber() - 1;
-          isHeaderFound = true;
+          clinVarHeaderMeta = new ClinVarHeaderMeta(NEW, lineNumberReader.getLineNumber());
+        } else if (line.startsWith(CLINVAR_HEADER_OLD)) {
+          clinVarHeaderMeta = new ClinVarHeaderMeta(OLD, lineNumberReader.getLineNumber());
         }
       }
     } catch (IOException ioException) {
       throw new UncheckedIOException(ioException);
     }
-    if(nrOfLinesToSkip == -1){
+    if (clinVarHeaderMeta == null) {
       throw new HeaderNotFoundException(file.getName());
     }
-    return nrOfLinesToSkip;
+    return clinVarHeaderMeta;
   }
 
   protected void processClinVar(ClinVarLine line, Lab lab) {

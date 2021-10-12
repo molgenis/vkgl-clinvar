@@ -23,6 +23,7 @@ class AppIT {
     String consensusFile = ResourceUtils.getFile("classpath:IT_Consensus.tsv").toString();
     String mappingFile = ResourceUtils.getFile("classpath:IT_Mapping.tsv").toString();
     String clinvarFile = ResourceUtils.getFile("classpath:IT_ClinVar_report.txt").toString();
+    String clinvarFile2 = ResourceUtils.getFile("classpath:IT_ClinVar_report2.txt").toString();
 
     String[] args = {
       "-i",
@@ -30,7 +31,7 @@ class AppIT {
       "-m",
       mappingFile,
       "-c",
-      String.format("umcg=%s", clinvarFile),
+      String.format("umcg=%s,amc=%s", clinvarFile,clinvarFile2),
       "-o",
       sharedTempDir.toString(),
       "-r",

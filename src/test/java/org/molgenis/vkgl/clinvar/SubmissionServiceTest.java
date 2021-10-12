@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.molgenis.vkgl.clinvar.model.Classification;
 import org.molgenis.vkgl.clinvar.model.ClinVarLine;
+import org.molgenis.vkgl.clinvar.model.ClinVarLineNew;
+import org.molgenis.vkgl.clinvar.model.ClinVarLineOld;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
 
@@ -29,7 +31,7 @@ class SubmissionServiceTest {
   @Test
   void processClinVar() {
     ClinVarLine clinVarLine =
-        ClinVarLine.builder()
+        ClinVarLineOld.builder()
             .clinicalSignificance("Benign")
             .gene("Gene")
             .scv("SCV123.1")
@@ -57,7 +59,7 @@ class SubmissionServiceTest {
   @Test
   void processClinVarException() {
     ClinVarLine clinVarLine =
-        ClinVarLine.builder()
+        ClinVarLineNew.builder()
             .clinicalSignificance("Benign")
             .gene("Gene")
             .scv("SCV123")
