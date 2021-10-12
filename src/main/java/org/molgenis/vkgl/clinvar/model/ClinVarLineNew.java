@@ -17,7 +17,7 @@ public class ClinVarLineNew implements ClinVarLine{
   @CsvBindByName(column = "Your_variant_description_chromosome_coordinates", required = true)
   String variantDescription;
 
-  @CsvBindByName(column = "Submitted_gene", required = true)
+  @CsvBindByName(column = "Submitted_gene")
   String gene;
 
   @CsvBindByName(column = "Clinical_significance", required = true)
