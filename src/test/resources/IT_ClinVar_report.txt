@@ -22,4 +22,5 @@
 #Invalid                   a warning that NCBI was not able to process your variant description as supplied
 #
 #Your_variant_id	VariationID	AlleleID	Your_record_id	SCV	RCV	Your_variant_description_HGVS	Your_variant_description_chromosome_coordinates	Preferred_variant_name	Your_condition_name	Your_condition_identifier	ClinVar_condition_name	Assigned_Concept_ID	Clinical_significance	Date_last_evaluated	Assertion_criteria	Submission_date	Submitted_gene	Novelty	Status	Info
-	123457	123457		SCV00123456.1	RCV00123456.1		<SequenceLocation Assembly="GRCh37" Chr="10" alternateAllele="G" referenceAllele="C" start="1" stop="1" variantLength="1"/>	NM_12345.6(GENE):c.2237=	not provided		not provided	CN123456	Benign			Jul 01, 2021	GENE	new allele	current	
+	123457	123457		SCV00123456.1	RCV00123456.1		<SequenceLocation Assembly="GRCh37" Chr="9" alternateAllele="G" referenceAllele="C" start="1" stop="1" variantLength="1"/>	NM_12345.6(GENE):c.2237=	not provided		not provided	CN123456	Benign			Jul 01, 2021	GENE	new allele	current	
+	123458	123458		SCV01234567	RCV01234567		<SequenceLocation Assembly="GRCh37" Chr="22" alternateAllele="G" referenceAllele="C" start="1" stop="1" variantLength="1"/>	NM_12345.6(GENE):c.2237=	not provided		not provided	CN123456	Benign			Jul 01, 2021	GENE	new allele	current	

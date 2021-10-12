@@ -139,7 +139,9 @@ public class SubmissionService {
     String clinVarAccession;
     if (clinvarAccessionSplit.length == 2) {
       clinVarAccession = clinvarAccessionSplit[0];
-    } else {
+    } else if(clinvarAccessionSplit.length == 1){
+      clinVarAccession = accession;
+    }else{
       throw new InvalidClinVarAccessionException(accession);
     }
     return clinVarAccession;
