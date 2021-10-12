@@ -70,13 +70,14 @@ public class LabSubmission {
 
   private void processLine(SubmissionLine submissionLine, boolean isSubmitSingleLine) {
     MappingLine mappingLine = submissionLine.getMappingLine();
-    if (!submissionLine.isChanged()) {
-      unchangedLines.add(submissionLine);
-    } else if (((submissionLine.isSingleLab() && !isSubmitSingleLine)
-        || !submissionLine.isValidType()
-        || submissionLine.isSv())) {
+    if (((submissionLine.isSingleLab() && !isSubmitSingleLine)
+        || !submissionLine.isValidType())) {
       processInvalidLine(submissionLine, isSubmitSingleLine, mappingLine);
-    } else {
+    } else if (!submissionLine.isChanged()) {
+      unchangedLines.add(submissionLine);
+    } else if(submissionLine.isSv()){
+      processInvalidLine(submissionLine, isSubmitSingleLine, mappingLine);
+    }else {
       if (mappingLine != null) {
         submissionLine.setComment(
             String.format(
@@ -91,7 +92,7 @@ public class LabSubmission {
   private void processInvalidLine(
       SubmissionLine submissionLine, boolean isSubmitSingleLine, MappingLine mappingLine) {
     if (submissionLine.isSv() && submissionLine.getMappingLine() != null) {
-      throw new SvWithAccessionException();
+      submissionLine.setComment("Unsupported: we currently do not submit SV's (>15bp) to ClinVar");
     } else if (submissionLine.isSingleLab() && !isSubmitSingleLine && mappingLine != null) {
       submissionLine.setComment("Invalid: classified by a single lab.");
     } else if ((!submissionLine.isValidType()) && submissionLine.getMappingLine() != null) {
