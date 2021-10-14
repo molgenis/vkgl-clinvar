@@ -63,7 +63,8 @@ class LabSubmissionTest {
           .alt("A")
           .gene("GENE2")
           .umcg(Classification.p)
-          .nrLabs(1)
+          .amc(Classification.p)
+          .nrLabs(2)
           .type(Type.total_agreement)
           .build();
   SubmissionLine submissionLine2 = new SubmissionLine(consensusLine2, umcg, mappingLine1);
@@ -77,7 +78,8 @@ class LabSubmissionTest {
           .alt("A")
           .gene("GENE3")
           .umcg(Classification.b)
-          .nrLabs(1)
+          .amc(Classification.b)
+          .nrLabs(2)
           .type(Type.total_agreement)
           .build();
   SubmissionLine submissionLine3 = new SubmissionLine(consensusLine3, umcg, mappingLine1);
@@ -90,7 +92,8 @@ class LabSubmissionTest {
           .alt("A")
           .gene("GENE2")
           .umcg(Classification.b)
-          .nrLabs(1)
+          .amc(Classification.b)
+          .nrLabs(2)
           .type(Type.total_agreement)
           .build();
   MappingLine mappingLine4 =
@@ -114,6 +117,7 @@ class LabSubmissionTest {
           .alt("A")
           .gene("GENE2")
           .umcg(Classification.b)
+          .amc(Classification.b)
           .nrLabs(2)
           .type(Type.disagreement)
           .build();
@@ -138,6 +142,7 @@ class LabSubmissionTest {
           .alt("A")
           .gene("GENE2")
           .umcg(Classification.b)
+          .amc(Classification.b)
           .nrLabs(2)
           .type(Type.agreement)
           .build();

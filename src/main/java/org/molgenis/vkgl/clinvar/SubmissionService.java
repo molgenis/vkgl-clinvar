@@ -2,10 +2,15 @@ package org.molgenis.vkgl.clinvar;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+import static org.molgenis.vkgl.clinvar.ClinVarHeaderEnum.NEW;
+import static org.molgenis.vkgl.clinvar.ClinVarHeaderEnum.OLD;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
@@ -15,7 +20,10 @@ import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.molgenis.vkgl.clinvar.model.Classification;
+import org.molgenis.vkgl.clinvar.model.ClinVarHeaderMeta;
 import org.molgenis.vkgl.clinvar.model.ClinVarLine;
+import org.molgenis.vkgl.clinvar.model.ClinVarLineNew;
+import org.molgenis.vkgl.clinvar.model.ClinVarLineOld;
 import org.molgenis.vkgl.clinvar.model.ConsensusLine;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
@@ -27,6 +35,8 @@ import org.xml.sax.InputSource;
 @Component
 public class SubmissionService {
 
+  private static final String CLINVAR_HEADER = "#Your_variant_id\tVariationID";
+  private static final String CLINVAR_HEADER_OLD = "#Your_variant_id\tVariantID";
   private SubmissionDecorator submissionDecorator;
   private ClinVarMapping clinVarMapping;
 
@@ -52,19 +62,51 @@ public class SubmissionService {
 
   private void readClinVarReport(Settings settings) {
     if (settings.getClinVarMapping() != null) {
-      for (Entry<Lab, Path> entry : settings.getClinVarMapping().entrySet())
+      for (Entry<Lab, Path> entry : settings.getClinVarMapping().entrySet()) {
+        ClinVarHeaderMeta headerMeta = getHeaderMeta(entry.getValue().toFile());
+        int nrOfLinesToSkip = headerMeta.getNrOfHeaders() - 1;
         try (Reader reader = Files.newBufferedReader(entry.getValue(), UTF_8)) {
-          CsvToBean<ClinVarLine> csvToBean =
-              new CsvToBeanBuilder<ClinVarLine>(reader)
-                  .withSkipLines(23)
-                  .withSeparator('\t')
-                  .withType(ClinVarLine.class)
-                  .build();
+          CsvToBean<ClinVarLine> csvToBean;
+          if (headerMeta.getType() == OLD) {
+            csvToBean = getCsvToBean(ClinVarLineOld.class, reader, nrOfLinesToSkip);
+          } else {
+            csvToBean = getCsvToBean(ClinVarLineNew.class, reader, nrOfLinesToSkip);
+          }
           csvToBean.forEach(line -> processClinVar(line, entry.getKey()));
         } catch (IOException e) {
           throw new UncheckedIOException(e);
         }
+      }
     }
+  }
+
+  public static <T extends ClinVarLine> CsvToBean<T> getCsvToBean(
+      Class T, Reader reader, int nrOfLinesToSkip) {
+    return new CsvToBeanBuilder<T>(reader)
+        .withSkipLines(nrOfLinesToSkip)
+        .withSeparator('\t')
+        .withType(T)
+        .build();
+  }
+
+  private ClinVarHeaderMeta getHeaderMeta(File file) {
+    ClinVarHeaderMeta clinVarHeaderMeta = null;
+    try (LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(file))) {
+      String line;
+      while ((line = lineNumberReader.readLine()) != null && clinVarHeaderMeta == null) {
+        if (line.startsWith(CLINVAR_HEADER)) {
+          clinVarHeaderMeta = new ClinVarHeaderMeta(NEW, lineNumberReader.getLineNumber());
+        } else if (line.startsWith(CLINVAR_HEADER_OLD)) {
+          clinVarHeaderMeta = new ClinVarHeaderMeta(OLD, lineNumberReader.getLineNumber());
+        }
+      }
+    } catch (IOException ioException) {
+      throw new UncheckedIOException(ioException);
+    }
+    if (clinVarHeaderMeta == null) {
+      throw new HeaderNotFoundException(file.getName());
+    }
+    return clinVarHeaderMeta;
   }
 
   protected void processClinVar(ClinVarLine line, Lab lab) {
@@ -97,7 +139,9 @@ public class SubmissionService {
     String clinVarAccession;
     if (clinvarAccessionSplit.length == 2) {
       clinVarAccession = clinvarAccessionSplit[0];
-    } else {
+    } else if(clinvarAccessionSplit.length == 1){
+      clinVarAccession = accession;
+    }else{
       throw new InvalidClinVarAccessionException(accession);
     }
     return clinVarAccession;
