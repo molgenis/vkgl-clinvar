@@ -12,9 +12,10 @@ import org.molgenis.vkgl.clinvar.model.Settings;
 
 public class DeleteWriter {
 
-  public static final String DELETES_FORMAT = "%s%n";
-  public static final String CLIN_VAR_ACCESSION = "ClinVarAccession\n";
+  public static final String DELETES_FORMAT = "%s\t%s%n";
+  public static final String CLIN_VAR_ACCESSION = "ClinVarAccession\tComment\n";
   public static final String DELETES_SHEET = "Deletes.tsv";
+  public static final String COMMENT = "No consensus in VKGL datashare study.";
 
   private static final String HEADER = CLIN_VAR_ACCESSION;
 
@@ -35,7 +36,7 @@ public class DeleteWriter {
                 .toFile())) {
       fileOutputStream.write(HEADER.getBytes());
       deletedAccessions.stream()
-          .map(accession -> String.format(DELETES_FORMAT, accession))
+          .map(accession -> String.format(DELETES_FORMAT, accession, COMMENT))
           .map(String::getBytes)
           .forEach(
               accession -> {
