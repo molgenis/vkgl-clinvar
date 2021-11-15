@@ -1,4 +1,5 @@
 [![Build Status](https://app.travis-ci.com/molgenis/vkgl-clinvar.svg?branch=main)](https://app.travis-ci.com/molgenis/vkgl-clinvar)
+[![Quality Status](https://sonarcloud.io/api/project_badges/measure?project=molgenis_vkgl-clinvar-submission&metric=alert_status)](https://sonarcloud.io/dashboard?id=molgenis_vkgl-clinvar-submission)
 
 ## Usage
 ```
