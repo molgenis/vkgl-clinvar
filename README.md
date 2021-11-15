@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/molgenis/vkgl-clinvar.svg?branch=main)](https://app.travis-ci.com/molgenis/vkgl-clinvar)
+
 ## Usage
 ```
 usage: java -jar vkgl-clinvar-writer.jar -i <arg> [-m <arg>] [-c <arg>] -o
