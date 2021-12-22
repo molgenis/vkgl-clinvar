@@ -3,6 +3,7 @@ package org.molgenis.vkgl.clinvar;
 import static java.util.Objects.requireNonNull;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_CLINVAR_REPORT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DEBUG;
+import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_DELETES;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_FORCE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_INPUT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_MAPPINGS;
@@ -88,6 +89,8 @@ class AppCommandLineRunner implements CommandLineRunner {
     Path inputPath = Path.of(inputPathValue);
     String mappingPathValue = commandLine.getOptionValue(OPT_MAPPINGS);
     List<Path> mappings = mapMappings(mappingPathValue);
+    String deletePathValue = commandLine.getOptionValue(OPT_DELETES);
+    Path deletePath = Path.of(deletePathValue);
     Map<Lab, Path> clinVarMappings = getClinVarMappings(commandLine);
     Path outputPath = Path.of(commandLine.getOptionValue(OPT_OUTPUT_DIR));
     String release = commandLine.getOptionValue(OPT_RELEASE_NAME);
@@ -100,6 +103,7 @@ class AppCommandLineRunner implements CommandLineRunner {
         .input(inputPath)
         .includeSingleLab(isIncludeSingleLab)
         .mappings(mappings)
+        .deletes(deletePath)
         .clinVarMapping(clinVarMappings)
         .outputDir(outputPath)
         .overwrite(overwriteOutput)

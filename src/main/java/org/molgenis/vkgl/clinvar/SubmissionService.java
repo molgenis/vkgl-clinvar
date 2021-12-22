@@ -27,6 +27,7 @@ import org.molgenis.vkgl.clinvar.model.ClinVarLineOld;
 import org.molgenis.vkgl.clinvar.model.ConsensusLine;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
+import org.molgenis.vkgl.clinvar.model.MappingType;
 import org.molgenis.vkgl.clinvar.model.Settings;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
@@ -55,9 +56,22 @@ public class SubmissionService {
     }
     readClinVarReport(settings);
     consensusReader.read(settings.getInput(), ConsensusLine.class).forEach(this::processConsensus);
+    mappingReader
+        .read(settings.getDeletes(), MappingLine.class)
+        .forEach(this::processDeletesMapping);
+
+    consensusReader.read(settings.getInput(), ConsensusLine.class).forEach(this::processConsensus);
     submissionDecorator.variantTraige(settings.isIncludeSingleLab());
 
     writer.write(submissionDecorator);
+  }
+
+  private void processDeletesMapping(MappingLine mappingLine) {
+    // Set type to deleted to be able to filter, and classification to 'deleted' to prevent variant
+    // from being interpreted as 'unchanged'.
+    mappingLine.setType(MappingType.DELETE);
+    mappingLine.setClassification(Classification.deleted);
+    processMapping(mappingLine);
   }
 
   private void readClinVarReport(Settings settings) {
@@ -139,9 +153,9 @@ public class SubmissionService {
     String clinVarAccession;
     if (clinvarAccessionSplit.length == 2) {
       clinVarAccession = clinvarAccessionSplit[0];
-    } else if(clinvarAccessionSplit.length == 1){
+    } else if (clinvarAccessionSplit.length == 1) {
       clinVarAccession = accession;
-    }else{
+    } else {
       throw new InvalidClinVarAccessionException(accession);
     }
     return clinVarAccession;

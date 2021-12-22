@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Set;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
 import org.molgenis.vkgl.clinvar.model.Settings;
@@ -29,7 +30,10 @@ public class LogWriter {
   }
 
   public void write(SubmissionDecorator submissionDecorator) {
-    write(submissionDecorator.getInvalidMappings(), LineType.REMOVED);
+    Set<MappingLine> deletedMappings = new HashSet<>();
+    deletedMappings.addAll(submissionDecorator.getInvalidMappings());
+    deletedMappings.addAll(submissionDecorator.getDeletedMappings());
+    write(deletedMappings, LineType.REMOVED);
     write(submissionDecorator.getUnchangedMappings(), LineType.UNCHANGED);
     write(submissionDecorator.getUpdatedMappings(), LineType.UPDATED);
   }

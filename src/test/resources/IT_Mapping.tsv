@@ -1,5 +1,4 @@
 chromosome	start	stop	ref	alt	gene	clinvar_accession	classification	lab
-2	1	1	A	T	GENE	123456A	b	umcg
 3	1	1	A	T	GENE	123456B	b	umcg
 4	1	1	A	T	GENE	132456C	lb	erasmus_mc
 5	1	1	A	T	GENE1	132456D	lb	amc

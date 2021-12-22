@@ -14,6 +14,8 @@ class AppCommandLineOptions {
   static final String OPT_INPUT_LONG = "input";
   static final String OPT_MAPPINGS = "m";
   static final String OPT_MAPPINGS_LONG = "mappings";
+  static final String OPT_DELETES = "dl";
+  static final String OPT_DELETES_LONG = "deletes";
   static final String OPT_CLINVAR_REPORT = "c";
   static final String OPT_CLINVAR_REPORT_LONG = "clinVar";
   static final String OPT_OUTPUT_DIR = "o";
@@ -46,6 +48,13 @@ class AppCommandLineOptions {
             .hasArg(true)
             .longOpt(OPT_MAPPINGS_LONG)
             .desc("Mapping log files from previous run with this tool.")
+            .build());
+    appOptions.addOption(
+        Option.builder(OPT_DELETES)
+            .hasArg(true)
+            .required()
+            .longOpt(OPT_DELETES_LONG)
+            .desc("Mapping log files with all deletes from previous runs with this tool.")
             .build());
     appOptions.addOption(
         Option.builder(OPT_CLINVAR_REPORT)
@@ -107,6 +116,7 @@ class AppCommandLineOptions {
   static void validateCommandLine(CommandLine commandLine) {
     validateInput(commandLine);
     validateMapping(commandLine);
+    validateDeletes(commandLine);
     validateClinVar(commandLine);
     validateOutput(commandLine);
   }
@@ -119,6 +129,13 @@ class AppCommandLineOptions {
   private static void validateMapping(CommandLine commandLine) {
     String mappingPathValue = commandLine.getOptionValue(OPT_MAPPINGS);
     for (String mapping : mappingPathValue.split(",")) {
+      validatePath(Path.of(mapping), TSV);
+    }
+  }
+
+  private static void validateDeletes(CommandLine commandLine) {
+    String mappingPathValue = commandLine.getOptionValue(OPT_DELETES);
+    for(String mapping : mappingPathValue.split(",")){
       validatePath(Path.of(mapping), TSV);
     }
   }

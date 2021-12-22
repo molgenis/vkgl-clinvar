@@ -1,10 +1,14 @@
 package org.molgenis.vkgl.clinvar.model;
 
+import static org.molgenis.vkgl.clinvar.model.MappingType.DEFAULT;
+
 import com.opencsv.bean.CsvBindByName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @AllArgsConstructor
@@ -44,4 +48,6 @@ public class MappingLine implements VariantLine {
 
   @CsvBindByName(column = "partOfDuplicate")
   boolean isPartOfDuplicate;
+
+  @Default @Setter MappingType type = DEFAULT;
 }

@@ -79,11 +79,19 @@ public class LabSubmission {
       processInvalidLine(submissionLine, isSubmitSingleLine, mappingLine);
     }else {
       if (mappingLine != null) {
-        submissionLine.setComment(
-            String.format(
-                "Updated: was '%s' is now '%s'.",
-                mappingLine.getClassification(),
-                submissionLine.getConsensusLine().getClassification(lab)));
+        if (submissionLine.isClassificationChanged()) {
+          submissionLine.setComment(
+              String.format(
+                  "Updated class: was '%s' is now '%s'.",
+                  mappingLine.getClassification(),
+                  submissionLine.getConsensusLine().getClassification(lab)));
+        } else {
+          submissionLine.setComment(
+              String.format(
+                  "Updated gene: was '%s' is now '%s'.",
+                  mappingLine.getGene(),
+                  submissionLine.getConsensusLine().getGene()));
+        }
       }
       updatedLines.add(submissionLine);
     }
@@ -119,10 +127,9 @@ public class LabSubmission {
     return duplicateList;
   }
 
-  public Set<String> getMissedAccessions() {
+  public Set<MappingLine> getMissedMappings() {
     return clinVarMapping.getAllMappingLines(lab).stream()
-        .map(MappingLine::getClinVarAccession)
-        .filter(accesion -> !accessions.contains(accesion))
+        .filter(mappings -> !accessions.contains(mappings.getClinVarAccession()))
         .collect(Collectors.toSet());
   }
 
