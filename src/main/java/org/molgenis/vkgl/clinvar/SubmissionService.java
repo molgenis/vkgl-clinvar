@@ -55,7 +55,6 @@ public class SubmissionService {
       mappingReader.read(mapping, MappingLine.class).forEach(this::processMapping);
     }
     readClinVarReport(settings);
-    consensusReader.read(settings.getInput(), ConsensusLine.class).forEach(this::processConsensus);
     mappingReader
         .read(settings.getDeletes(), MappingLine.class)
         .forEach(this::processDeletesMapping);
