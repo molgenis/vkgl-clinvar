@@ -31,7 +31,6 @@ public class LogWriter {
 
   public void write(SubmissionDecorator submissionDecorator) {
     Set<MappingLine> deletedMappings = new HashSet<>();
-    deletedMappings.addAll(submissionDecorator.getInvalidMappings());
     deletedMappings.addAll(submissionDecorator.getDeletedMappings());
     write(deletedMappings, LineType.REMOVED);
     write(submissionDecorator.getUnchangedMappings(), LineType.UNCHANGED);
