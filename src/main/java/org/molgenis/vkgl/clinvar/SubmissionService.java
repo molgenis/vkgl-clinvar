@@ -66,7 +66,7 @@ public class SubmissionService {
         ClinVarHeaderMeta headerMeta = getHeaderMeta(entry.getValue().toFile());
         int nrOfLinesToSkip = headerMeta.getNrOfHeaders() - 1;
         try (Reader reader = Files.newBufferedReader(entry.getValue(), UTF_8)) {
-          CsvToBean<ClinVarLine> csvToBean;
+          CsvToBean<? extends ClinVarLine> csvToBean;
           if (headerMeta.getType() == OLD) {
             csvToBean = getCsvToBean(ClinVarLineOld.class, reader, nrOfLinesToSkip);
           } else {
@@ -81,11 +81,11 @@ public class SubmissionService {
   }
 
   public static <T extends ClinVarLine> CsvToBean<T> getCsvToBean(
-      Class T, Reader reader, int nrOfLinesToSkip) {
+      Class<T> tClass, Reader reader, int nrOfLinesToSkip) {
     return new CsvToBeanBuilder<T>(reader)
         .withSkipLines(nrOfLinesToSkip)
         .withSeparator('\t')
-        .withType(T)
+        .withType(tClass)
         .build();
   }
 

@@ -51,9 +51,7 @@ class AppIT {
       Set<String> expectedOutput = getLinesSet(expected.toPath());
       Set<String> actualOutput = getLinesSet(actual);
 
-      System.out.println("Checking " + filename);
-      assertEquals(expectedOutput, actualOutput);
-      System.out.println("Done checking " + filename);
+      assertEquals(expectedOutput, actualOutput, "Checking " + filename);
     }
   }
 
