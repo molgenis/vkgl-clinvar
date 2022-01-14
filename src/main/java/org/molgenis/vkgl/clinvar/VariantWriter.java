@@ -80,7 +80,7 @@ public class VariantWriter {
                 .toFile())) {
       fileOutputStream.write(HEADER.getBytes());
       variants.stream()
-          .map(variant -> toTsvString(variant))
+          .map(this::toTsvString)
           .map(String::getBytes)
           .forEach(
               line -> {

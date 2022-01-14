@@ -1,6 +1,5 @@
 package org.molgenis.vkgl.clinvar;
 
-import java.util.stream.Collectors;
 import org.molgenis.vkgl.clinvar.model.Lab;
 import org.molgenis.vkgl.clinvar.model.MappingLine;
 import org.molgenis.vkgl.clinvar.model.MappingType;
@@ -25,7 +24,7 @@ public class ClinVarWriter {
           submissionDecorator.getDeletedMappings(lab).stream()
               .filter(mappingLine -> mappingLine.getType() != MappingType.DELETE)
               .map(MappingLine::getClinVarAccession)
-              .collect(Collectors.toList()),
+              .toList(),
           lab);
     }
     logWriter.write(submissionDecorator);

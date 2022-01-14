@@ -11,7 +11,6 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +35,7 @@ public class CsvReader<T> {
               .withType(targetClass)
               .withThrowExceptions(false)
               .build();
-      lines = csvToBean.stream().collect(Collectors.toList());
+      lines = csvToBean.stream().toList();
       handleCsvParseExceptions(csvToBean.getCapturedExceptions());
     } catch (IOException e) {
       throw new UncheckedIOException(e);
