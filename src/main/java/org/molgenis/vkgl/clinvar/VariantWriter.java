@@ -62,10 +62,13 @@ public class VariantWriter {
 
   private final Path outputDir;
   private final String release;
+  private final GenesFilter genesFilter;
 
   public VariantWriter(Settings settings) {
-    this.outputDir = requireNonNull(settings.getOutputDir());
-    this.release = requireNonNull(settings.getRelease());
+    requireNonNull(settings);
+    this.outputDir = settings.getOutputDir();
+    this.release = settings.getRelease();
+    this.genesFilter = new GenesFilter(settings);
   }
 
   public void write(Collection<SubmissionLine> variants, Lab lab) {
@@ -77,7 +80,7 @@ public class VariantWriter {
                 .toFile())) {
       fileOutputStream.write(HEADER.getBytes());
       variants.stream()
-          .map(this::toTsvString)
+          .map(variant -> toTsvString(variant))
           .map(String::getBytes)
           .forEach(
               line -> {
@@ -100,6 +103,7 @@ public class VariantWriter {
       accession = submissionLine.getClinVarAccession();
       type = UPDATE;
     }
+    String gene = line.getGene();
     return String.format(
         VARIANT_FORMAT,
         line.getChromosome(),
@@ -110,7 +114,7 @@ public class VariantWriter {
         getConditionName(line.getClassification(submissionLine.getLab())),
         line.getClassification(submissionLine.getLab()).getLongName(),
         "",
-        line.getGene(),
+        genesFilter.filter(gene),
         accession,
         type,
         ALLELE_ORIGIN_VALUE,

@@ -19,4 +19,5 @@ public class Settings {
   boolean debug;
   boolean includeSingleLab;
   String release;
+  Path pseudogenesPath;
 }
