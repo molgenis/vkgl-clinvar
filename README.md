@@ -6,11 +6,13 @@
 
 ## Usage
 ```
-usage: java -jar vkgl-clinvar-writer.jar -i <arg> [-m <arg>] [-c <arg>] -o
-       <arg> -r <arg> [-dd] [-s] [-f] [-d]
+usage: java -jar vkgl-clinvar-writer.jar -i <arg> [-m <arg>] -dl <arg> [-c
+       <arg>] -o <arg> -r <arg> [-s] [-pg <arg>] [-f] [-d]
  -i,--input <arg>          VKGL consensus file (tsv).
  -m,--mappings <arg>       Mapping log files from previous run with this
                            tool.
+ -dl,--deletes <arg>       Mapping log file with all deletes from
+                           previous runs with this tool.
  -c,--clinVar <arg>        ClinVar Submission reports from previous
                            submission, format: lab1=report
                            path,lab2=report path
@@ -18,6 +20,8 @@ usage: java -jar vkgl-clinvar-writer.jar -i <arg> [-m <arg>] [-c <arg>] -o
  -r,--release <arg>        Release name to use in ClinVar file names.
  -s,--include_single_lab   Flag to indicate that single lab submissions
                            should also be submitted.
+ -pg,--pseudogenes <arg>   List of pseudogens from Biomart, used to
+                           exclude these symbols from submission.
  -f,--force                Override the output files if output directory
                            already exists.
  -d,--debug                Enable debug mode (additional logging).

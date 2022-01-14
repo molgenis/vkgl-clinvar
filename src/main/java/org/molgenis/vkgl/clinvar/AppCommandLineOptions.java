@@ -57,7 +57,7 @@ class AppCommandLineOptions {
             .hasArg(true)
             .required()
             .longOpt(OPT_DELETES_LONG)
-            .desc("Mapping log files with all deletes from previous runs with this tool.")
+            .desc("Mapping log file with all deletes from previous runs with this tool.")
             .build());
     appOptions.addOption(
         Option.builder(OPT_CLINVAR_REPORT)
