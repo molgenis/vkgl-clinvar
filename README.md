@@ -50,6 +50,10 @@ Accession can become invalid if:
 - The consensusline is based on a single lab and the "include single lab" flag is false.
 - If the consensus status has become "disagreement" or "total_disagreement"
 
+## Pseudogenes
+Provide a file with pseudogenes to prevent these symbols from being submitted to ClinVar.
+The file should be in biomart format, and can be downloaded via this [link](https://biomart.genenames.org/martform/#!/default/HGNC?datasets=hgnc_gene_mart&hgnc_gene__locus_group_1010=pseudogene)
+
 ## Duplicates
 Since version 1.1.x the most severe variant is submitted to ClinVar in case of duplicates.
 If multiple duplicates have the same classification these duplicates are sorted alphabetically on genename, and the first one is selected.

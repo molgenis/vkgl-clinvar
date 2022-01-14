@@ -1,0 +1,2 @@
+HGNC ID	Status	Approved symbol	Approved name
+HGNC:123	Approved	PSEUDO	pseudogene
