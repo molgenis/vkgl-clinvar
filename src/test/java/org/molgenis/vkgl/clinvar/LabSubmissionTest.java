@@ -276,7 +276,7 @@ class LabSubmissionTest {
                 submissionLine5.getMappingLine().getComment()),
         () ->
             assertEquals(
-                "Updated: was 'p' is now 'b'.", submissionLine6.getMappingLine().getComment()),
+                "Updated class: was 'p' is now 'b'.", submissionLine6.getMappingLine().getComment()),
         () ->
             assertEquals(
                 "Invalid: classified by a single lab.",
@@ -297,6 +297,6 @@ class LabSubmissionTest {
     labSubmission.addConsensusLine(consensusLine2);
     labSubmission.addConsensusLine(consensusLine4);
 
-    assertEquals(Set.of("567"), labSubmission.getMissedAccessions());
+    assertEquals(Set.of(mappingLine5), labSubmission.getMissedMappings());
   }
 }

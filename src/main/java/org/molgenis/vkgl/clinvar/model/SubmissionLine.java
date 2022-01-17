@@ -18,8 +18,12 @@ public class SubmissionLine {
 
   public boolean isChanged() {
     return mappingLine == null
-        || !consensusLine.getClassification(lab).equals(mappingLine.getClassification())
+        || isClassificationChanged()
         || !mappingLine.getGene().equals(consensusLine.getGene());
+  }
+
+  public boolean isClassificationChanged() {
+    return !consensusLine.getClassification(lab).equals(mappingLine.getClassification());
   }
 
   public boolean isSingleLab() {

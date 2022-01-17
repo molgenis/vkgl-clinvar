@@ -32,17 +32,17 @@ import org.molgenis.vkgl.clinvar.model.VariantId;
 @ExtendWith(MockitoExtension.class)
 class SubmissionDecoratorTest {
 
-  @Mock ClinVarMapping mapping;
-  @Mock LabSubmission umcgLabSubmission;
-  @Mock LabSubmission amcLabSubmission;
-  @Mock LabSubmission otherLabSubmission;
-  @Mock SubmissionLine submissionLine1;
-  @Mock SubmissionLine submissionLine2;
-  @Mock SubmissionLine submissionLine3;
-  @Mock SubmissionLine submissionLine4;
-  @Mock MappingLine mappingLine1;
-  @Mock MappingLine mappingLine3;
-  @Mock MappingLine mappingLine4;
+  @Mock(name = "mapping") ClinVarMapping mapping;
+  @Mock(name = "umcgLabSubmission") LabSubmission umcgLabSubmission;
+  @Mock(name = "amcLabSubmission") LabSubmission amcLabSubmission;
+  @Mock(name = "otherLabSubmission") LabSubmission otherLabSubmission;
+  @Mock(name = "submissionLine1") SubmissionLine submissionLine1;
+  @Mock(name = "submissionLine2") SubmissionLine submissionLine2;
+  @Mock(name = "submissionLine3") SubmissionLine submissionLine3;
+  @Mock(name = "submissionLine4") SubmissionLine submissionLine4;
+  @Mock(name = "mappingLine1") MappingLine mappingLine1;
+  @Mock(name = "mappingLine3") MappingLine mappingLine3;
+  @Mock(name = "mappingLine4") MappingLine mappingLine4;
 
   private SubmissionDecorator submissionDecorator;
 
@@ -153,14 +153,11 @@ class SubmissionDecoratorTest {
 
   @Test
   void getAccessionsToDelete() {
-    doReturn("234").when(submissionLine3).getClinVarAccession();
-    doReturn("345").when(submissionLine4).getClinVarAccession();
-
     doReturn(mappingLine3).when(submissionLine3).getMappingLine();
     doReturn(mappingLine4).when(submissionLine4).getMappingLine();
     when(umcgLabSubmission.getInvalid()).thenReturn(Set.of(submissionLine3, submissionLine4));
 
-    assertEquals(Set.of("345", "234"), submissionDecorator.getAccessionsToDelete(umcg));
+    assertEquals(Set.of(mappingLine4, mappingLine3), submissionDecorator.getDeletedMappings(umcg));
   }
 
   @Test

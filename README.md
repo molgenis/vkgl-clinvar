@@ -27,12 +27,14 @@ usage: java -jar vkgl-clinvar-writer.jar -v
 ```
 
 ## Existing ID's
+__Always provide__ the "-dl" deleted accessions from the previous run, these are necessary because a reintroduced variant should be an update.
+The deleted accessions of a run can be found in "*_REMOVED_log.tsv" 
+
 There is a bit of hocus pocus going on around the ClinVar SCV's (identifiers), mainly because at this point we are not sure what to do with records that were submitted to ClinVar but became duplicates in the new release, or records that were removed from the consensus.
 2 options are in play for annotating the new ClinVar release files with the correct SCV's:
 'm' / 'mappings': Here the 'identifier' files from previous release can be provided, 4 of these are available, depending on what was submitted they should be provided:
-- *_UNCHANGED_log.tsv: always provide this one, it contains identifiers for unchanged record, those are not resubmitted.
+- *_UNCHANGED_log.tsv: __always provide this one__, it contains identifiers for unchanged record, those are not resubmitted.
 - *_UPDATED_log.tsv: don't provide those, updated record SCV's are obtained from the ClinVar Submission report.
-- *_REMOVED_log.tsv: Only provide if removed records were not removed from ClinVar.
 
 'c' / 'clinVar': Here the submission report from ClinVar for the previous release should be provided for each lab. The argument is a comma separated list of key=value pairs.
 

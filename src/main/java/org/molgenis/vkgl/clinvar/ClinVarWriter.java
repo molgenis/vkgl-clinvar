@@ -1,8 +1,9 @@
 package org.molgenis.vkgl.clinvar;
 
-import static java.util.Objects.requireNonNull;
-
+import java.util.stream.Collectors;
 import org.molgenis.vkgl.clinvar.model.Lab;
+import org.molgenis.vkgl.clinvar.model.MappingLine;
+import org.molgenis.vkgl.clinvar.model.MappingType;
 import org.molgenis.vkgl.clinvar.model.Settings;
 
 public class ClinVarWriter {
@@ -20,7 +21,12 @@ public class ClinVarWriter {
   public void write(SubmissionDecorator submissionDecorator) {
     for (Lab lab : Lab.values()) {
       variantWriter.write(submissionDecorator.getUpdated(lab), lab);
-      deleteWriter.write(submissionDecorator.getAccessionsToDelete(lab), lab);
+      deleteWriter.write(
+          submissionDecorator.getDeletedMappings(lab).stream()
+              .filter(mappingLine -> mappingLine.getType() != MappingType.DELETE)
+              .map(MappingLine::getClinVarAccession)
+              .collect(Collectors.toList()),
+          lab);
     }
     logWriter.write(submissionDecorator);
   }

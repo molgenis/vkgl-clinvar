@@ -58,9 +58,9 @@ public class SubmissionDecorator {
     return labSubmission.getInvalid();
   }
 
-  private Set<String> getMissedAccessions(Lab lab) {
+  private Set<MappingLine> getMissedMappings(Lab lab) {
     LabSubmission labSubmission = getSubmissionContext(lab);
-    return labSubmission.getMissedAccessions();
+    return labSubmission.getMissedMappings();
   }
 
   public Set<MappingLine> getDuplicatedMappings() {
@@ -106,13 +106,21 @@ public class SubmissionDecorator {
     return mappings;
   }
 
-  public Collection<String> getAccessionsToDelete(Lab lab) {
-    Set<String> accessions = new HashSet<>();
+  public Collection<MappingLine> getDeletedMappings(Lab lab) {
+    Set<MappingLine> mappings = new HashSet<>();
     getInvalid(lab).stream()
         .filter(line -> (line.getMappingLine() != null))
-        .forEach(line -> accessions.add(line.getClinVarAccession()));
-    getMissedAccessions(lab).forEach(accessions::add);
-    return accessions;
+        .forEach(line -> mappings.add(line.getMappingLine()));
+    getMissedMappings(lab).forEach(mappings::add);
+    return mappings;
+  }
+
+  public Collection<MappingLine> getDeletedMappings() {
+    Set<MappingLine> mappings = new HashSet<>();
+    for(Lab lab:Lab.values()){
+      mappings.addAll(getDeletedMappings(lab));
+    }
+    return mappings;
   }
 
   public void variantTraige(boolean includeSingleLab) {

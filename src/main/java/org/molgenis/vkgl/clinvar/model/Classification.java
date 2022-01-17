@@ -9,7 +9,8 @@ public enum Classification {
   lb("Likely benign", 2),
   vus("Uncertain significance", 3),
   lp("Likely pathogenic", 4),
-  p("Pathogenic", 5);
+  p("Pathogenic", 5),
+  deleted("Deleted", -1);
 
   private final String longName;
 

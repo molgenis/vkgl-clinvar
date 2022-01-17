@@ -13,6 +13,7 @@ public class Settings {
   Path input;
   List<Path> mappings;
   Map<Lab, Path> clinVarMapping;
+  Path deletes;
   Path outputDir;
   boolean overwrite;
   boolean debug;
