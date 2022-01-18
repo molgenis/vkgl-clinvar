@@ -1,0 +1,3 @@
+HGNC ID	Status	Approved symbol	Approved name
+HGNC:123	Approved	ABC12	alpha-beta pseudogene 12
+HGNC:345	Approved	ABC23	alpha-beta pseudogene 23

@@ -24,6 +24,8 @@ class AppCommandLineOptions {
   static final String OPT_RELEASE_NAME_LONG = "release";
   static final String OPT_SINGLE_MODE = "s";
   static final String OPT_SINGLE_MODE_LONG = "include_single_lab";
+  static final String OPT_PSEUDOGENES = "pg";
+  static final String OPT_PSEUDOGENES_LONG = "pseudogenes";
   static final String OPT_FORCE = "f";
   static final String OPT_FORCE_LONG = "force";
   static final String OPT_DEBUG = "d";
@@ -33,6 +35,7 @@ class AppCommandLineOptions {
   private static final Options APP_OPTIONS;
   private static final Options APP_VERSION_OPTIONS;
   private static final String TSV = ".tsv";
+  private static final String TXT = ".txt";
 
   static {
     Options appOptions = new Options();
@@ -54,7 +57,7 @@ class AppCommandLineOptions {
             .hasArg(true)
             .required()
             .longOpt(OPT_DELETES_LONG)
-            .desc("Mapping log files with all deletes from previous runs with this tool.")
+            .desc("Mapping log file with all deletes from previous runs with this tool.")
             .build());
     appOptions.addOption(
         Option.builder(OPT_CLINVAR_REPORT)
@@ -81,6 +84,12 @@ class AppCommandLineOptions {
         Option.builder(OPT_SINGLE_MODE)
             .longOpt(OPT_SINGLE_MODE_LONG)
             .desc("Flag to indicate that single lab submissions should also be submitted.")
+            .build());
+    appOptions.addOption(
+        Option.builder(OPT_PSEUDOGENES)
+            .longOpt(OPT_PSEUDOGENES_LONG)
+            .hasArg(true)
+            .desc("List of pseudogens from Biomart, used to exclude these symbols from submission.")
             .build());
     appOptions.addOption(
         Option.builder(OPT_FORCE)
@@ -119,6 +128,7 @@ class AppCommandLineOptions {
     validateDeletes(commandLine);
     validateClinVar(commandLine);
     validateOutput(commandLine);
+    validatePsuedogenes(commandLine);
   }
 
   private static void validateInput(CommandLine commandLine) {
@@ -138,6 +148,14 @@ class AppCommandLineOptions {
     for(String mapping : mappingPathValue.split(",")){
       validatePath(Path.of(mapping), TSV);
     }
+  }
+
+  private static void validatePsuedogenes(CommandLine commandLine) {
+    if (!commandLine.hasOption(OPT_PSEUDOGENES)) {
+      return;
+    }
+    String pseudogenesPathValue = commandLine.getOptionValue(OPT_PSEUDOGENES);
+    validatePath(Path.of(pseudogenesPathValue), TXT);
   }
 
   private static void validateClinVar(CommandLine commandLine) {

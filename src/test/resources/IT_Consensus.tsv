@@ -13,4 +13,5 @@ chromosome	start	stop	ref	alt	gene	nr_labs	amc	erasmus_mc	lumc	nki	radboud_mumc	
 10	1	1	C	G	GENE4	2	b						lb		lb	total_agreement
 11	1	1	C	G	GENE1	2	b						b		b	total_agreement
 11	1	1	C	G	GENE2	2	b						b		b	total_agreement
+12	1	1	A	T	PSEUDO	2	p	p								total_agreement
 X	1	17	A	TTTTTTTTTTTTTTTT	GENE	2	p	p								total_agreement

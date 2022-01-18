@@ -5,3 +5,4 @@ Chromosome	Start	Stop	Reference allele	Alternate allele	Preferred condition name
 9	1	1	C	G	not provided	Likely benign		GENE		novel	germline	yes	clinical testing
 10	1	1	C	G	not provided	Likely benign		GENE3	123456G	update	germline	yes	clinical testing
 11	1	1	C	G	not specified	Benign		GENE1	123456I	update	germline	yes	clinical testing
+12	1	1	A	T	not provided	Pathogenic				novel	germline	yes	clinical testing

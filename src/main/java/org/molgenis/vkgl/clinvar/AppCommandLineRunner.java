@@ -8,6 +8,7 @@ import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_FORCE;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_INPUT;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_MAPPINGS;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_OUTPUT_DIR;
+import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_PSEUDOGENES;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_RELEASE_NAME;
 import static org.molgenis.vkgl.clinvar.AppCommandLineOptions.OPT_SINGLE_MODE;
 
@@ -95,6 +96,8 @@ class AppCommandLineRunner implements CommandLineRunner {
     Path outputPath = Path.of(commandLine.getOptionValue(OPT_OUTPUT_DIR));
     String release = commandLine.getOptionValue(OPT_RELEASE_NAME);
     boolean overwriteOutput = commandLine.hasOption(OPT_FORCE);
+    String pseudogenePathValue = commandLine.getOptionValue(OPT_PSEUDOGENES);
+    Path pseudogenesPath = pseudogenePathValue != null ? Path.of(pseudogenePathValue) : null;
 
     boolean debugMode = commandLine.hasOption(OPT_DEBUG);
     boolean isIncludeSingleLab = commandLine.hasOption(OPT_SINGLE_MODE);
@@ -108,6 +111,7 @@ class AppCommandLineRunner implements CommandLineRunner {
         .outputDir(outputPath)
         .overwrite(overwriteOutput)
         .release(release)
+        .pseudogenesPath(pseudogenesPath)
         .debug(debugMode)
         .build();
   }

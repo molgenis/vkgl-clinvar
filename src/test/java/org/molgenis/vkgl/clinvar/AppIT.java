@@ -23,6 +23,7 @@ class AppIT {
     String consensusFile = ResourceUtils.getFile("classpath:IT_Consensus.tsv").toString();
     String mappingFile = ResourceUtils.getFile("classpath:IT_Mapping.tsv").toString();
     String deleteFile = ResourceUtils.getFile("classpath:IT_Delete.tsv").toString();
+    String pseudogenesFile = ResourceUtils.getFile("classpath:IT_Pseudo.txt").toString();
     String clinvarFile = ResourceUtils.getFile("classpath:IT_ClinVar_report.txt").toString();
     String clinvarFile2 = ResourceUtils.getFile("classpath:IT_ClinVar_report2.txt").toString();
 
@@ -39,6 +40,8 @@ class AppIT {
       "IT",
       "-dl",
       deleteFile,
+      "-pg",
+      pseudogenesFile,
       "-dd"
     };
     SpringApplication.run(App.class, args);

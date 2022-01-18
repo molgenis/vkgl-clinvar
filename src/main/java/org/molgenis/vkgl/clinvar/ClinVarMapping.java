@@ -18,10 +18,7 @@ public class ClinVarMapping {
   List<String> processedAccessions = new ArrayList<>();
 
   private Map<VariantId, MappingLine> getMapping(Lab lab) {
-    if (!mapping.containsKey(lab)) {
-      Map<VariantId, MappingLine> labMapping = new HashMap<>();
-      mapping.put(lab, labMapping);
-    }
+    mapping.computeIfAbsent(lab, k -> new HashMap<>());
     return mapping.get(lab);
   }
 
